@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '10fe67da0b56b5384bd201830c37adf3' # import secrets secrets.token_hex(16)
 
-posts = [{
+posts = [{  #Dummy Data for practice
   'author': 'corey schafer',
   'title': 'Blog post 1',
   'content':'First post content',
