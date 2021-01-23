@@ -1,3 +1,6 @@
+
+Code from the command line on how to insert data in the database
+
 >>> from blogpost import db 
 C:\Users\Zach\AppData\Local\Programs\Python\Python39\lib\site-packages\flask_sqlalchemy\__init__.py:833: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
   warnings.warn(FSADeprecationWarning(
