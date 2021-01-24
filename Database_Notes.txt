@@ -1,48 +1,90 @@
 
-Code from the command line on how to insert data in the database
+--Code from the command line on how to insert data in the database
 
->>> from blogpost import db 
-C:\Users\Zach\AppData\Local\Programs\Python\Python39\lib\site-packages\flask_sqlalchemy\__init__.py:833: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
-  warnings.warn(FSADeprecationWarning(
->>> db.create_all()
->>> from blogpost import User, Post
->>> user_1 = User(username='Zach', email='zach@aol.com', password='password') 
->>> db.session.add(user_1)
->>> user_2 = User(username='Joe', email='Joe@aol.com', password='password')   
->>> db.session.add(user_2) 
->>> db.session.commit()
->>> User.query.all()
-[User('Zach,zach@aol.com,default.jpg'), User('Joe,Joe@aol.com,default.jpg')]
->>> User.query.first()
-User('Zach,zach@aol.com,default.jpg')
->>> User.query.filter_by(username='Zach').all()
-[User('Zach,zach@aol.com,default.jpg')]
->>> user = User.query.filter_by(username='Zach').first() 
->>> user
-User('Zach,zach@aol.com,default.jpg')
->>> user.id
-1
->>> user = User.query.get(1)
->>> user
-User('Zach,zach@aol.com,default.jpg')
->>> user.posts
-[]
->>> post_1 = Post(title='Blog 1', content='First Post Content!', user_id=user.id) 
->>> post_2 = Post(title='Blog 2', content='Second Post Content!', user_id=user.id) 
->>> db.session.add(post_1)
->>> db.session.add(post_2) 
->>> db.session.commit()
->>> user.posts
-[Post('Blog 1,2021-01-23 00:27:37.327020'), Post('Blog 2,2021-01-23 00:27:37.329020')]
->>> for post in user.posts:
-...     print(post.title)   
-... 
-Blog 1
-Blog 2
->>> post = Post.query.first()
->>> post
-Post('Blog 1,2021-01-23 00:27:37.327020')
->>> post.user_id
-1
->>> post.author
-User('Zach,zach@aol.com,default.jpg')
+    >>> from blogpost import db 
+    C:\Users\Zach\AppData\Local\Programs\Python\Python39\lib\site-packages\flask_sqlalchemy\__init__.py:833: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+      warnings.warn(FSADeprecationWarning(
+    >>> db.create_all()
+    >>> from blogpost import User, Post
+    >>> user_1 = User(username='Zach', email='zach@aol.com', password='password') 
+    >>> db.session.add(user_1)
+    >>> user_2 = User(username='Joe', email='Joe@aol.com', password='password')   
+    >>> db.session.add(user_2) 
+    >>> db.session.commit()
+    >>> User.query.all()
+    [User('Zach,zach@aol.com,default.jpg'), User('Joe,Joe@aol.com,default.jpg')]
+    >>> User.query.first()
+    User('Zach,zach@aol.com,default.jpg')
+    >>> User.query.filter_by(username='Zach').all()
+    [User('Zach,zach@aol.com,default.jpg')]
+    >>> user = User.query.filter_by(username='Zach').first() 
+    >>> user
+    User('Zach,zach@aol.com,default.jpg')
+    >>> user.id
+    1
+    >>> user = User.query.get(1)
+    >>> user
+    User('Zach,zach@aol.com,default.jpg')
+    >>> user.posts
+    []
+    >>> post_1 = Post(title='Blog 1', content='First Post Content!', user_id=user.id) 
+    >>> post_2 = Post(title='Blog 2', content='Second Post Content!', user_id=user.id) 
+    >>> db.session.add(post_1)
+    >>> db.session.add(post_2) 
+    >>> db.session.commit()
+    >>> user.posts
+    [Post('Blog 1,2021-01-23 00:27:37.327020'), Post('Blog 2,2021-01-23 00:27:37.329020')]
+    >>> for post in user.posts:
+    ...     print(post.title)   
+    ... 
+    Blog 1
+    Blog 2
+    >>> post = Post.query.first()
+    >>> post
+    Post('Blog 1,2021-01-23 00:27:37.327020')
+    >>> post.user_id
+    1
+    >>> post.author
+    User('Zach,zach@aol.com,default.jpg')
+
+
+
+---Video 6- User AUthentication 
+
+    pip install flask-bcrypt
+
+-- Code to has a passwrod and insert it into the database along with the other things
+
+    hashed_password= bcrypt.generate_password_hash(form.password.data).decode('utf-8') # creating a hashed pw 
+    user = User(username=form.username.data,email=form.email.data,password=hashed_password)
+    db.session.add(user)
+    db.session.commit()
+
+
+--- How to get the users from the database
+    for u in User.query:  
+    ...     u
+    User('Zach,zach@aol.com,default.jpg')
+    User('Joe,Joe@aol.com,default.jpg')
+    User('zooom33,ICoveredWarsUKnow@aol.com,default.jpg')
+
+
+-- Added to the forms.py to check if the username/ email is taken and will throw an error if it is
+    def validate_username(self,username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+          raise ValidationError("That username is taken, please choose a different one!")
+
+      def validate_email(self,email):
+        email = User.query.filter_by(email=email.data).first()
+        if email:
+          raise ValidationError("That email is taken, please choose a different one!")
+
+
+--Log in System
+    pip install flask-login
+
+
+
+
+--- End Video 6 
