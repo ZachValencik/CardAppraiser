@@ -83,8 +83,12 @@
 
 --Log in System
     pip install flask-login
+from flask_login import LoginManager, login_manager
+login_manager = LoginManager(app)
+from flask_login import UserMixin
 
 
-
+if current_user.is_authenticated: # If already loggined in its goes to home page instead
+    return redirect(url_for('home'))
 
 --- End Video 6 
