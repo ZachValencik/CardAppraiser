@@ -1,5 +1,7 @@
 
 --Code from the command line on how to insert data in the database
+    https://www.youtube.com/watch?v=cYWiDiIUxQc&list=LL&index=4&t=397s&ab_channel=CoreySchafer
+
 
     >>> from blogpost import db 
     C:\Users\Zach\AppData\Local\Programs\Python\Python39\lib\site-packages\flask_sqlalchemy\__init__.py:833: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
@@ -92,3 +94,8 @@ if current_user.is_authenticated: # If already loggined in its goes to home page
     return redirect(url_for('home'))
 
 --- End Video 6 
+
+
+
+--VIDEO 7 USER ACCOUNT and profile picture
+
