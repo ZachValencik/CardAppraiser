@@ -99,3 +99,8 @@ if current_user.is_authenticated: # If already loggined in its goes to home page
 
 --VIDEO 7 USER ACCOUNT and profile picture
 
+--Video 8 
+
+
+--for the buttons for post.html
+https://getbootstrap.com/docs/4.0/components/modal/ 
