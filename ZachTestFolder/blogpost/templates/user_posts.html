@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<h1 class="mb-3">Posts by {{user.username}} ({{posts.total}})</h1>
   <!-- the posts is sent in from the blogpost.py and its Dummy data right now that acts like it got it from a database of blogs to post to the main page -->
 
   {% for post in posts.items %}
@@ -21,9 +22,9 @@
     
     {% if page_num %}
       {% if posts.page == page_num %}
-        <a class="btn btn-info mb-4" href="{{url_for('home',page=page_num)}}">{{page_num}}</a>
+        <a class="btn btn-info mb-4" href="{{url_for('user_posts',username=user.username,page=page_num)}}">{{page_num}}</a>
       {% else %}
-      <a class="btn btn-outline-info mb-4" href="{{url_for('home',page=page_num)}}">{{page_num}}</a>
+      <a class="btn btn-outline-info mb-4" href="{{url_for('user_posts',username=user.username,page=page_num)}}">{{page_num}}</a>
       
       {% endif %}
     {% else %}

@@ -112,3 +112,32 @@ https://www.youtube.com/watch?v=PSWf2TjTGNY&ab_channel=CoreySchafer
 
 
 //Pagination is to only show a certain amount of posts on a certian page could be useful in our project to only show a certain number of stuff at a time
+
+['__class__', '__delattr__', '__dict__', '__dir__', 
+'__doc__', '__eq__', '__format__', '__ge__', 
+'__getattribute__', '__gt__', '__hash__', '__init__', 
+'__init_subclass__', '__le__', '__lt__', '__module__', 
+'__ne__', '__new__', '__reduce__', '__reduce_ex__', 
+'__repr__', '__setattr__', '__sizeof__', '__str__', 
+'__subclasshook__', '__weakref__', 'has_next', 'has_prev', 
+'items', 'iter_pages', 
+'next', 'next_num', 'page', 'pages', 'per_page', 
+'prev', 'prev_num', 'query', 'total']
+
+-- Below for loop makes buttons that go thru each posts. Should be used somewhere in the project
+
+  {% for page_num in posts.iter_pages() %}
+    
+    {% if page_num %}
+
+    <a class="btn btn-outline-info mb-4" href="{{url_for('home',page=page_num)}}">{{page_num}}</a>
+
+    {% else %}
+ 
+  {% endfor %}
+
+
+
+    -- How we make it so the newest posts are shown at the top
+  posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page,per_page=5)
+
