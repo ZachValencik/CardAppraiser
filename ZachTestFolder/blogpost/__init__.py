@@ -11,5 +11,11 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login' # needed for the user to not see the account page while not logged in
 login_manager.login_message_category = 'info' # makes the flash messages look better
+app.config['MAIL_SERVER']= 'smtp.googlemail.com'
+app.config['MAIL_PORT']= 587
+app.config['MAIL_USE_TLS']= True
+app.config['MAIL_USERNAME']= 'gaunterodimwit@gmail.com'
+app.config['MAIL_PASSWORD'] ='Swift109'
 
+mail= Mail(app)
 from blogpost import routes
