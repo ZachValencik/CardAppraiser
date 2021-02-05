@@ -104,3 +104,11 @@ if current_user.is_authenticated: # If already loggined in its goes to home page
 
 --for the buttons for post.html
 https://getbootstrap.com/docs/4.0/components/modal/ 
+
+
+
+--Video 9 Pagination 
+https://www.youtube.com/watch?v=PSWf2TjTGNY&ab_channel=CoreySchafer
+
+
+//Pagination is to only show a certain amount of posts on a certian page could be useful in our project to only show a certain number of stuff at a time
