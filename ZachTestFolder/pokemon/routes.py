@@ -1,9 +1,9 @@
 import secrets,os
 from PIL import Image # this is so we can resize the images so it doesnt take up a lot of sapce if its from a large image
 from flask import render_template,url_for,flash,redirect,request,abort
-from blogpost import app,db,bcrypt,mail
-from blogpost.models import User
-from blogpost.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
+from pokemon import app,db,bcrypt,mail
+from pokemon.models import User
+from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
 from flask_login import login_user,current_user,logout_user,login_required
 from flask_mail import Message
 

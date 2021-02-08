@@ -18,4 +18,4 @@ app.config['MAIL_USERNAME']= 'gaunterodimwit@gmail.com'
 app.config['MAIL_PASSWORD'] ='Swift109'
 
 mail= Mail(app)
-from blogpost import routes
+from pokemon import routes
