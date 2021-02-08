@@ -1,11 +1,13 @@
+
+
 body {
-  background: #fafafa;
-  color: #333333;
+  background: #ff0000;
+  color: #3B4CCA;
   margin-top: 5rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #444444;
+  color: #3B4CCA;
 }
 
 .bg-steel {
@@ -25,7 +27,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content-section {
-  background: #ffffff;
+  background: #ff0000;
   padding: 10px 20px;
   border: 1px solid #dddddd;
   border-radius: 3px;
@@ -77,4 +79,10 @@ a.article-title:hover {
 
 .account-heading {
   font-size: 2.5rem;
+}
+
+.btn-primary{
+  color:#333;
+  background-color: #ff0000;
+
 }
