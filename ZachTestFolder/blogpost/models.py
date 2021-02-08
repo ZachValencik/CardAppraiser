@@ -14,7 +14,6 @@ class User(db.Model,UserMixin): # this is the user in the db
   email = db.Column(db.String(20),unique=True,nullable=False)
   image_file = db.Column(db.String(20),nullable=False,default='default.jpg') 
   password = db.Column(db.String(60),nullable=False)
-  posts = db.relationship('Post',backref='author',lazy=True)
 
   def get_reset_token(self,expires_sec=1800):
     s = Serializer(app.config['SECRET_KEY'],expires_sec)
@@ -36,14 +35,3 @@ class User(db.Model,UserMixin): # this is the user in the db
   def __repr__(self): #how our object is printed when its printed out
     return f"User('{self.username},{self.email},{self.image_file}')"
 
-
-class Post(db.Model): # how the post a user does is made in the db
-  
-  id = db.Column(db.Integer,primary_key=True) #Each user id is unique with a priamry key
-  title =  db.Column(db.String(100),nullable=False)
-  date_posted = db.Column(db.DateTime,nullable=False,default=datetime.utcnow) 
-  content = db.Column(db.Text,nullable=False)
-  user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False) # Connecting user and post
-
-  def __repr__(self):
-    return f"Post('{self.title},{self.date_posted}')"
