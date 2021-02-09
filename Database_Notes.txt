@@ -222,3 +222,6 @@ def reset_token(token):
     --FLASK WEBSITE for CSS
 
     https://pythonhow.com/add-css-to-flask-website/
+
+    //CSS TIP---
+      if css doesnt change delete browser cache 
