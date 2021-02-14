@@ -8,24 +8,34 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #eeff00;
-  text-shadow: 1px 0 0 rgb(0, 38, 255), 0 -1px 0 rgb(0, 38, 255), 0 1px 0 rgb(0, 38, 255), -1px 0 rgb(0, 38, 255);
+  font-family: sans-serif;
+  color:yellow;
+  text-shadow: 3px 0 0 rgb(0, 38, 255), 0 -3px 0 rgb(0, 38, 255), 0 3px 0 rgb(0, 38, 255), -3px 0 rgb(0, 38, 255);
+
 }
 
 .bg-steel {
-  background-color: blue;
+  background-color:red;
+}
+
+.site-header .navbar-brand {
+  font-family: sans-serif;
+  font-size: 25px;
+  color:yellow;
+  text-shadow: 3px 0 0 rgb(0, 38, 255), 0 -3px 0 rgb(0, 38, 255), 0 3px 0 rgb(0, 38, 255), -3px 0 rgb(0, 38, 255);
+
+   
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #eeff00;
-  text-shadow: 1px 0 0 rgb(0, 38, 255), 0 -1px 0 rgb(0, 38, 255), 0 1px 0 rgb(0, 38, 255), -1px 0 rgb(0, 38, 255);
+  font-family: sans-serif;
+  color:yellow;
+  text-shadow: 2px 0 0 rgb(0, 38, 255), 0 -2px 0 rgb(0, 38, 255), 0 2px 0 rgb(0, 38, 255), -2px 0 rgb(0, 38, 255);
+
 }
 
 .site-header .navbar-nav .nav-link:hover {
-  color: #ffffff;
   font-size: larger;
-  text-shadow: 1px 0 0 rgb(0, 38, 255), 0 -1px 0 rgb(0, 38, 255), 0 1px 0 rgb(0, 38, 255), -1px 0 rgb(0, 38, 255);
-
 }
 
 .site-header .navbar-nav .nav-link.active {
@@ -33,7 +43,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content-section {
-  background:white;
+  font-family: sans-serif;
+  background: whitesmoke;
   color: #eeff00;
   text-shadow: 1px 0 0 rgb(0, 38, 255), 0 -1px 0 rgb(0, 38, 255), 0 1px 0 rgb(0, 38, 255), -1px 0 rgb(0, 38, 255);
 
