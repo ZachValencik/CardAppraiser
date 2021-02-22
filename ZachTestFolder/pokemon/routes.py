@@ -28,7 +28,8 @@ def register():
     cur.execute("INSERT INTO User(username,email,password) VALUES(%s,%s,%s)",(name,email,hashed_password))
     mysql.connection.commit()
     cur.close()
-    return 'success'
+    flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
+    return render_template('register.html',title='register')
 
   return render_template('register.html',title='register')
 
