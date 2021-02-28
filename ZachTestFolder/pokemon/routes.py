@@ -27,14 +27,19 @@ def register():
           flash(f'Passwords dont match!','success')
           return render_template('register.html',title='register')
     else:
+      try:
+        hashed_password= bcrypt.generate_password_hash(userDetails['password']).decode('utf-8') # creating a hashed pw 
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO User(username,email,password) VALUES(%s,%s,%s)",(name,email,hashed_password))
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
+        return render_template('register.html',title='register')
+      except:
+        flash(f'ERROR!','success') # A flash method that alerts the user that the form was completed
+        return render_template('register.html',title='register')
 
-      hashed_password= bcrypt.generate_password_hash(userDetails['password']).decode('utf-8') # creating a hashed pw 
-      cur = mysql.connection.cursor()
-      cur.execute("INSERT INTO User(username,email,password) VALUES(%s,%s,%s)",(name,email,hashed_password))
-      mysql.connection.commit()
-      cur.close()
-      flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
-      return render_template('register.html',title='register')
+
 
   return render_template('register.html',title='register')
 
