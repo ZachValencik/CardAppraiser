@@ -39,8 +39,15 @@ def register():
         flash(f'ERROR!','success') # A flash method that alerts the user that the form was completed
         return render_template('register.html',title='register')
 
-
-
   return render_template('register.html',title='register')
+
+
+
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+
+  return render_template('login.html',title='login')
+
 
 
