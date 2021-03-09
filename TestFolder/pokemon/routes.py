@@ -13,9 +13,6 @@ from pokemon import app,bcrypt,mysql
 def home():
   return render_template('home.html',title="Home")
 
-
-
-
 @app.route('/register',methods=['GET','POST']) # need [methods=['GET','POST'] in able to use to submit data
 def register():
   if request.method == 'POST':
@@ -43,7 +40,7 @@ def register():
 
 
 
-
+#TO DO. Make This work
 @app.route('/login',methods=['GET','POST'])
 def login():
 
