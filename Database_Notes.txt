@@ -233,3 +233,4 @@ def reset_token(token):
         // we import jsonify from flask
         //Note.. Doesnt seem to work need to look more into it. or we can stick to what we have
         //Added so if password and checkpassword dont match, it returns a 400 bad request so it can be tested on postman.
+        // TO DO 3/19 --> Set up Sessions 
