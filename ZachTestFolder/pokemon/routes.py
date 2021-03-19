@@ -24,8 +24,9 @@ def register():
     name = userDetails['name']
     email = userDetails['email']
     if userDetails['password'] != userDetails['checkpassword']:
+          #return 'Passwords DontMatch', 400
           flash(f'Passwords dont match!','success')
-          return render_template('register.html',title='register')
+          return render_template('register.html',title='register'),400
     else:
       try:
         hashed_password= bcrypt.generate_password_hash(userDetails['password']).decode('utf-8') # creating a hashed pw 
