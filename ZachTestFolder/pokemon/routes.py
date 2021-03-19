@@ -61,7 +61,7 @@ def login():
     mysql.connection.commit()
     userN = cur.fetchone()
     cur.close()
-    if(userN != None): #Checks if it returns the user
+    if(bcrypt.check_password_hash(userN['password'],password)): #Checks if it returns the user
       session["user"] = user # This should only pass if user and pw are correct
       return render_template('home.html',userName=user)
     else:
