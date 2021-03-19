@@ -1,6 +1,6 @@
 #import secrets,os
 from PIL import Image # this is so we can resize the images so it doesnt take up a lot of sapce if its from a large image
-from flask import render_template,url_for,flash,redirect,request,abort
+from flask import render_template,url_for,flash,redirect,request,abort,session
 from pokemon import app,bcrypt,mysql
 #from pokemon.models import User
 #from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
@@ -48,11 +48,23 @@ def register():
 @app.route('/login',methods=['GET','POST'])
 def login():
 
-  return render_template('login.html',title='login')
+  if request.method == "POST":
+    #TO DO: Make it so it conncets to mysql and checks username and pw
+    user = request.form["name"] 
+    password = request.form["password"]
+    session["user"] = user # This should only pass if user and pw are correct
+    return redirect(url_for("PokemonHome"))
+  else:
+    return render_template('login.html',title='login')
 
 #route from signup to PokemonHome
-@app.route('/PokemonHome')
+@app.route('/PokemonHome',methods=['GET','POST'])
 def PokemonHome():
+  if "user" in session: # if user is logged in it will render the pokemon cards, otherwise redirect to login
+    user = session["user"]
     return render_template('PokemonHome.html',title='PokemonHome')
+  else:
+    return render_template('login.html',title='login')
+
 
 
