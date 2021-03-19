@@ -232,3 +232,4 @@ def reset_token(token):
         //This will be how we retrieve data from the webserver. Be able to test easy with Postman hopefully
         // we import jsonify from flask
         //Note.. Doesnt seem to work need to look more into it. or we can stick to what we have
+        //Added so if password and checkpassword dont match, it returns a 400 bad request so it can be tested on postman.
