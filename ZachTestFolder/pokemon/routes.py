@@ -53,10 +53,20 @@ def login():
 
   if request.method == "POST":
     #TO DO: Make it so it conncets to mysql and checks username and pw
+
     user = request.form["name"] 
     password = request.form["password"]
-    session["user"] = user # This should only pass if user and pw are correct
-    return render_template('home.html',userName=user)
+    cur = mysql.connection.cursor()
+    cur.execute("""SELECT * FROM User WHERE username = %s""", (user,))
+    mysql.connection.commit()
+    userN = cur.fetchone()
+    cur.close()
+    if(userN != None): #Checks if it returns the user
+      session["user"] = user # This should only pass if user and pw are correct
+      return render_template('home.html',userName=user)
+    else:
+      flash(f'Wrong username or password!','success')
+      return render_template('login.html',title='login')
   else:
     return render_template('login.html',title='login')
 
