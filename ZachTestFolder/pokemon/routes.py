@@ -11,7 +11,11 @@ from pokemon import app,bcrypt,mysql
 @app.route('/')
 @app.route('/home') # how to make two routes work on same page
 def home():
-  return render_template('home.html',title="Home")
+  if "user" in session:
+    user = session["user"]
+    return render_template('home.html',userName=user)
+  else: 
+    return render_template('home.html')
 
 
 
@@ -19,7 +23,6 @@ def home():
 @app.route('/register',methods=['GET','POST']) # need [methods=['GET','POST'] in able to use to submit data
 def register():
   if request.method == 'POST':
-
     userDetails = request.form
     name = userDetails['name']
     email = userDetails['email']
@@ -53,9 +56,10 @@ def login():
     user = request.form["name"] 
     password = request.form["password"]
     session["user"] = user # This should only pass if user and pw are correct
-    return redirect(url_for("PokemonHome"))
+    return render_template('home.html',userName=user)
   else:
     return render_template('login.html',title='login')
+
 
 #route from signup to PokemonHome
 @app.route('/PokemonHome',methods=['GET','POST'])
