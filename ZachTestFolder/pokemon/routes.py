@@ -76,6 +76,11 @@ def login():
   else:
     return render_template('login.html',title='login'),400
 
+@app.route('/logout')
+def logout():
+    session.pop('user',None)
+    return render_template('home.html')
+
 
 #route from signup to PokemonHome
 @app.route('/PokemonHome',methods=['GET','POST'])
