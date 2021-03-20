@@ -57,8 +57,15 @@ def login():
     password = request.form["password"]
     cur = mysql.connection.cursor()
     cur.execute("""SELECT * FROM User WHERE username = %s""", (user,))
+    
+
     mysql.connection.commit()
     userN = cur.fetchone()
+
+    if userN == None: #This triggers if they enter a wrong username
+      flash(f'Wrong username or password!','success')
+      return render_template('login.html',title='login'),400
+
     cur.close()
     if(bcrypt.check_password_hash(userN['password'],password)): #Checks if it returns the user
       session["user"] = user # This should only pass if user and pw are correct
