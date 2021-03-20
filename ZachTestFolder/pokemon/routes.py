@@ -38,10 +38,10 @@ def register():
         mysql.connection.commit()
         cur.close()
         flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
-        return render_template('register.html',title='register')
+        return render_template('register.html',title='register'),200
       except:
         flash(f'ERROR!','success') # A flash method that alerts the user that the form was completed
-        return render_template('register.html',title='register')
+        return render_template('register.html',title='register'),400
 
   return render_template('register.html',title='register')
 
@@ -53,7 +53,6 @@ def login():
 
   if request.method == "POST":
     #TO DO: Make it so it conncets to mysql and checks username and pw
-
     user = request.form["name"] 
     password = request.form["password"]
     cur = mysql.connection.cursor()
@@ -63,12 +62,12 @@ def login():
     cur.close()
     if(bcrypt.check_password_hash(userN['password'],password)): #Checks if it returns the user
       session["user"] = user # This should only pass if user and pw are correct
-      return render_template('home.html',userName=user)
+      return render_template('home.html',userName=user),200
     else:
       flash(f'Wrong username or password!','success')
-      return render_template('login.html',title='login')
+      return render_template('login.html',title='login'),400
   else:
-    return render_template('login.html',title='login')
+    return render_template('login.html',title='login'),400
 
 
 #route from signup to PokemonHome
@@ -81,4 +80,10 @@ def PokemonHome():
     return render_template('login.html',title='login')
 
 
+
+@app.route('/profile',methods=['GET','POST'])
+def profile():
+    user = session["user"]
+    return render_template('profile.html',userName=user)
+  
 
