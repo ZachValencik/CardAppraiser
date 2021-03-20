@@ -237,3 +237,8 @@ def reset_token(token):
         
         //3/19 Sessions
         https://www.youtube.com/watch?v=iIhAfX4iek0&t=197s&ab_channel=TechWithTim  Tutorial on Sessions
+
+      
+    3/20 
+    https://pythonbasics.org/flask-sessions/
+      What was done today was add the user ability to logout with setting sessions user to null 
