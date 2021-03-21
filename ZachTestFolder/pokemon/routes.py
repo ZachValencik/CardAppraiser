@@ -69,7 +69,7 @@ def login():
     cur.close()
     if(bcrypt.check_password_hash(userN['password'],password)): #Checks if it returns the user
       session["user"] = user # This should only pass if user and pw are correct
-      return render_template('home.html',userName=user),200
+      return redirect(url_for('home'))
     else:
       flash(f'Wrong username or password!','success')
       return render_template('login.html',title='login'),400
@@ -95,7 +95,10 @@ def PokemonHome():
 
 @app.route('/profile',methods=['GET','POST'])
 def profile():
-    user = session["user"]
-    return render_template('profile.html',userName=user)
+    if "user" in session:
+      user = session["user"]
+      return render_template('profile.html',userName=user)
+    else:
+      return redirect(url_for('login'))
   
 
