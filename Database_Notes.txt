@@ -242,3 +242,10 @@ def reset_token(token):
     3/20 
     https://pythonbasics.org/flask-sessions/
       What was done today was add the user ability to logout with setting sessions user to null 
+
+
+  3/21
+  What was done today
+  1. The right url shows up when redirected from one page to antother
+  2. Added the webpage for the social media page, it will only show up when user is logged in, if they try to access it while logged out it will redirect to login.
+  3.

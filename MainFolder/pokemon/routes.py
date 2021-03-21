@@ -102,3 +102,12 @@ def profile():
       return redirect(url_for('login'))
   
 
+
+@app.route('/social',methods=['GET','POST'])
+def socialMedia():
+    if "user" in session:
+      user = session["user"]
+      return render_template('socialMedia.html',userName=user)
+    else:
+      return redirect(url_for('login'))
+  
