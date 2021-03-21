@@ -89,7 +89,7 @@ def PokemonHome():
     user = session["user"]
     return render_template('PokemonHome.html',title='PokemonHome')
   else:
-    return render_template('login.html',title='login')
+    return redirect(url_for('login'))
 
 
 
