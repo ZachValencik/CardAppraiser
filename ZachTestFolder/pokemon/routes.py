@@ -79,7 +79,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('user',None)
-    return render_template('home.html')
+    return redirect(url_for('home'))
 
 
 #route from signup to PokemonHome
