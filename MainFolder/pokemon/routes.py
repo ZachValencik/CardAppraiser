@@ -30,13 +30,13 @@ def register():
     userDetails = request.form
     name = userDetails['name']
     if len(name)<=0:
-      flash(f'Must Enter a username','success')
+      flash(f'Must Enter a username','danger')
       return render_template('register.html',title='register'),400
 
     email = userDetails['email']
     if userDetails['password'] != userDetails['checkpassword']:
           #return 'Passwords DontMatch', 400
-          flash(f'Passwords dont match!','success')
+          flash(f'Passwords dont match!','danger')
           return render_template('register.html',title='register'),400
     else:
       try:
@@ -48,7 +48,7 @@ def register():
         flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
         return render_template('register.html',title='register'),200
       except:
-        flash(f'ERROR!','success') # A flash method that alerts the user that the form was completed
+        flash(f'ERROR!','danger') # A flash method that alerts the user that the form was completed
         return render_template('register.html',title='register'),400
 
   return render_template('register.html',title='register')
@@ -71,7 +71,7 @@ def login():
     userN = cur.fetchone()
 
     if userN == None: #This triggers if they enter a wrong username
-      flash(f'Wrong username or password!','success')
+      flash(f'Wrong username or password!','danger')
       return render_template('login.html',title='login'),400
 
     cur.close()
@@ -79,7 +79,7 @@ def login():
       session["user"] = user # This should only pass if user and pw are correct
       return redirect(url_for('home'))
     else:
-      flash(f'Wrong username or password!','success')
+      flash(f'Wrong username or password!','danger')
       return render_template('login.html',title='login'),400
   else:
     return render_template('login.html',title='login'),400
@@ -143,12 +143,12 @@ def forgotPassword():
 
 @app.route('/passwordReset/<token>',methods=['GET','POST'])
 def resetPassword(token):
+
   try:
     email = s.loads(token,max_age=200)
   except SignatureExpired:
     flash("Token Expired")
     return redirect(url_for('forgotPassword'))
-
 
   if request.method == 'POST':
         hashed_password= bcrypt.generate_password_hash(request.form['password']).decode('utf-8') # creating a hashed pw 
