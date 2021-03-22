@@ -249,3 +249,7 @@ def reset_token(token):
   1. The right url shows up when redirected from one page to antother
   2. Added the webpage for the social media page, it will only show up when user is logged in, if they try to access it while logged out it will redirect to login.
   3.
+
+
+  3/22 Password Reset
+  https://www.youtube.com/watch?v=vutyTx7IaAI&ab_channel=CoreySchafer

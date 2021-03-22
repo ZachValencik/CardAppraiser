@@ -115,3 +115,12 @@ def socialMedia():
     else:
       return redirect(url_for('login'))
   
+
+@app.route('/forgotPassword',methods=['GET','POST'])
+def forgotPassword():
+  if "user" in session:
+      user = session["user"]
+      return redirect(url_for('home'))
+  else:
+    return render_template('forgotPassword.html')
+      
