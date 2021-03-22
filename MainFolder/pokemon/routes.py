@@ -25,6 +25,10 @@ def register():
   if request.method == 'POST':
     userDetails = request.form
     name = userDetails['name']
+    if len(name)<=0:
+      flash(f'Must Enter a username','success')
+      return render_template('register.html',title='register'),400
+
     email = userDetails['email']
     if userDetails['password'] != userDetails['checkpassword']:
           #return 'Passwords DontMatch', 400
