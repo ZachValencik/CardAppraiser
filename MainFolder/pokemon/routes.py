@@ -2,13 +2,15 @@
 from PIL import Image # this is so we can resize the images so it doesnt take up a lot of sapce if its from a large image
 from flask import render_template,url_for,flash,redirect,request,abort,session
 from flask_mail import Mail,Message
-from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import URLSafeTimedSerializer,SignatureExpired
 from pokemon import app,bcrypt,mysql
 #from pokemon.models import User
 #from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
 #from flask_login import login_user,current_user,logout_user,login_required
 #from flask_mail import Message
 s = URLSafeTimedSerializer('ThisisaSecret!')
+app.config.from_pyfile('config.cfg')
+mail = Mail(app)
 
 @app.route('/')
 @app.route('/home') # how to make two routes work on same page
@@ -130,15 +132,33 @@ def forgotPassword():
             return render_template('forgotPassword.html')
   email = request.form["email"]
   token = s.dumps(email)
-  flash("The Token is "+token)  
+  msg = Message('Reset Password ',sender="pokemoncardapp@gmail.com",recipients=[email])
+  link = url_for('resetPassword',token=token,_external=True)
+  msg.body= 'Your Link is {}'.format(link)
+  mail.send(msg)
+
+  flash("A password reset has been sent to your email ",'success')  
   return render_template('forgotPassword.html')
 
 
 @app.route('/passwordReset/<token>',methods=['GET','POST'])
 def resetPassword(token):
+  try:
+    email = s.loads(token,max_age=200)
+  except SignatureExpired:
+    flash("Token Expired")
+    return redirect(url_for('forgotPassword'))
 
-  email = s.loads(token,max_age=300)
 
-  flash("The Token Works "+email)
+  if request.method == 'POST':
+        hashed_password= bcrypt.generate_password_hash(request.form['password']).decode('utf-8') # creating a hashed pw 
+        cur = mysql.connection.cursor()
+        update = "UPDATE User SET password= '{}' WHERE email= '{}'".format(hashed_password,email)
+        cur.execute(update)
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Your Password Has Been Updated','success') # A flash method that alerts the user that the form was completed
+        return redirect(url_for('login'))
+
   return render_template('resetPassword.html')
       
