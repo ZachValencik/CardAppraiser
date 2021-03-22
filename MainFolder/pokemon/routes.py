@@ -1,12 +1,14 @@
 #import secrets,os
 from PIL import Image # this is so we can resize the images so it doesnt take up a lot of sapce if its from a large image
 from flask import render_template,url_for,flash,redirect,request,abort,session
+from flask_mail import Mail,Message
+from itsdangerous import URLSafeTimedSerializer
 from pokemon import app,bcrypt,mysql
 #from pokemon.models import User
 #from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
 #from flask_login import login_user,current_user,logout_user,login_required
 #from flask_mail import Message
-
+s = URLSafeTimedSerializer('ThisisaSecret!')
 
 @app.route('/')
 @app.route('/home') # how to make two routes work on same page
@@ -118,9 +120,25 @@ def socialMedia():
 
 @app.route('/forgotPassword',methods=['GET','POST'])
 def forgotPassword():
+  
   if "user" in session:
-      user = session["user"]
-      return redirect(url_for('home'))
-  else:
-    return render_template('forgotPassword.html')
+    user = session["user"]
+    return redirect(url_for('home'))
+
+
+  if request.method == "GET":
+            return render_template('forgotPassword.html')
+  email = request.form["email"]
+  token = s.dumps(email)
+  flash("The Token is "+token)  
+  return render_template('forgotPassword.html')
+
+
+@app.route('/passwordReset/<token>',methods=['GET','POST'])
+def resetPassword(token):
+
+  email = s.loads(token,max_age=300)
+
+  flash("The Token Works "+email)
+  return render_template('resetPassword.html')
       

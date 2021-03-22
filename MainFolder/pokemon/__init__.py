@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager,UserMixin,login_user
 from flask_mail import Mail
 from flask_mysqldb import MySQL,MySQLdb
+
 #import yaml
 
 app = Flask(__name__)
@@ -17,6 +18,10 @@ app.config['MYSQL_USER']= 'cards_S2021'
 app.config['MYSQL_PASSWORD']= 'cardsrOK!'
 app.config['MYSQL_DB']= 'cards_S2021'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
+
+
+
 
 #db = SQLAlchemy(app)
 #login_manager = LoginManager()
