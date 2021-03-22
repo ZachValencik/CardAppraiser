@@ -106,3 +106,9 @@ a.article-title:hover {
   background-color: #ff0000;
 
 }
+
+label {
+  font-family: sans-serif;
+  font-size: 5px;
+  color:blue;
+}
