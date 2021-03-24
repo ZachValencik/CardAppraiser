@@ -54,6 +54,12 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
 }
 
+.register-login {
+  font-family: sans-serif;
+  background: whitesmoke;
+  background-size: auto;
+}
+
 .article-title {
   color: #ff0000;
 }
