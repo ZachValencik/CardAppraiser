@@ -53,11 +53,16 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 3px;
   margin-bottom: 20px;
 }
-
 .register-login {
   font-family: sans-serif;
   background: whitesmoke;
   background-size: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+  
 }
 
 .article-title {
