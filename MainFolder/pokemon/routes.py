@@ -1,12 +1,16 @@
 #import secrets,os
 from PIL import Image # this is so we can resize the images so it doesnt take up a lot of sapce if its from a large image
 from flask import render_template,url_for,flash,redirect,request,abort,session
+from flask_mail import Mail,Message
+from itsdangerous import URLSafeTimedSerializer,SignatureExpired
 from pokemon import app,bcrypt,mysql
 #from pokemon.models import User
 #from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
 #from flask_login import login_user,current_user,logout_user,login_required
 #from flask_mail import Message
-
+s = URLSafeTimedSerializer('ThisisaSecret!')
+app.config.from_pyfile('config.cfg')
+mail = Mail(app)
 
 @app.route('/')
 @app.route('/home') # how to make two routes work on same page
@@ -26,13 +30,13 @@ def register():
     userDetails = request.form
     name = userDetails['name']
     if len(name)<=0:
-      flash(f'Must Enter a username','success')
+      flash(f'Must Enter a username','danger')
       return render_template('register.html',title='register'),400
 
     email = userDetails['email']
     if userDetails['password'] != userDetails['checkpassword']:
           #return 'Passwords DontMatch', 400
-          flash(f'Passwords dont match!','success')
+          flash(f'Passwords dont match!','danger')
           return render_template('register.html',title='register'),400
     else:
       try:
@@ -44,7 +48,7 @@ def register():
         flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
         return render_template('register.html',title='register'),200
       except:
-        flash(f'ERROR!','success') # A flash method that alerts the user that the form was completed
+        flash(f'ERROR!','danger') # A flash method that alerts the user that the form was completed
         return render_template('register.html',title='register'),400
 
   return render_template('register.html',title='register')
@@ -67,7 +71,7 @@ def login():
     userN = cur.fetchone()
 
     if userN == None: #This triggers if they enter a wrong username
-      flash(f'Wrong username or password!','success')
+      flash(f'Wrong username or password!','danger')
       return render_template('login.html',title='login'),400
 
     cur.close()
@@ -75,7 +79,7 @@ def login():
       session["user"] = user # This should only pass if user and pw are correct
       return redirect(url_for('home'))
     else:
-      flash(f'Wrong username or password!','success')
+      flash(f'Wrong username or password!','danger')
       return render_template('login.html',title='login'),400
   else:
     return render_template('login.html',title='login'),400
@@ -111,15 +115,50 @@ def profile():
 def socialMedia():
     if "user" in session:
       user = session["user"]
-      #data = request.form
-      #print(data)
-      if request.method =='POST':
-          mediaPost = request.form.get('mediaPost')
-
-          if len(mediaPost) < 1:
-              flash(f'Post must be longer than 1 character','danger')
-          #add mediaPost to database
       return render_template('socialMedia.html',userName=user)
     else:
       return redirect(url_for('login'))
   
+
+@app.route('/forgotPassword',methods=['GET','POST'])
+def forgotPassword():
+  
+  if "user" in session:
+    user = session["user"]
+    return redirect(url_for('home'))
+
+
+  if request.method == "GET":
+            return render_template('forgotPassword.html')
+  email = request.form["email"]
+  token = s.dumps(email)
+  msg = Message('Reset Password ',sender="pokemoncardapp@gmail.com",recipients=[email])
+  link = url_for('resetPassword',token=token,_external=True)
+  msg.body= 'Your Link is {}'.format(link)
+  mail.send(msg)
+
+  flash("A password reset has been sent to your email ",'success')  
+  return render_template('forgotPassword.html')
+
+
+@app.route('/passwordReset/<token>',methods=['GET','POST'])
+def resetPassword(token):
+
+  try:
+    email = s.loads(token,max_age=200)
+  except SignatureExpired:
+    flash("Token Expired")
+    return redirect(url_for('forgotPassword'))
+
+  if request.method == 'POST':
+        hashed_password= bcrypt.generate_password_hash(request.form['password']).decode('utf-8') # creating a hashed pw 
+        cur = mysql.connection.cursor()
+        update = "UPDATE User SET password= '{}' WHERE email= '{}'".format(hashed_password,email)
+        cur.execute(update)
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Your Password Has Been Updated','success') # A flash method that alerts the user that the form was completed
+        return redirect(url_for('login'))
+
+  return render_template('resetPassword.html')
+        
