@@ -115,6 +115,21 @@ def profile():
 def socialMedia():
     if "user" in session:
       user = session["user"]
+      #data = request.form
+      #print(data)
+      if request.method == 'POST':
+        mediaPost = request.form.get('mediaPost')
+
+        if len(mediaPost) < 1:
+          flash(f'Post must include more than 1 character','danger')
+        else:
+          cur = mysql.connection.cursor()
+          cur.execute("INSERT INTO SocialMedia(post,username) VALUES(%s,%s)",(mediaPost,user))
+          mysql.connection.commit()
+          cur.close()
+          flash(f'Your post was published','success') # A flash method that alerts the user that the form was completed
+          #return render_template('register.html',title='register'),200
+
       return render_template('socialMedia.html',userName=user)
     else:
       return redirect(url_for('login'))
