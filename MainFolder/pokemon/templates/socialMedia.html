@@ -2,6 +2,14 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if userName %}
-<h1> Welcome to our Social Media fourm!-{{userName}}</h1>
+<h1 align="center"> Welcome to our Social Media forum!-{{userName}}</h1>
+<br />
+<h2> This is a test for our Forum Page</h2>
+<form method="POST">
+    <textarea name="mediaPost" id="mediaPost" class="form-control"></textarea>
+        <div align="center">
+            <button type="submit" class="btn btn-primary"> Publish Post</button>
+        </div>
+</form>
 {% endif %}
 {% endblock content %}

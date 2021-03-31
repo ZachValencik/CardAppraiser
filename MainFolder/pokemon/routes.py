@@ -111,6 +111,14 @@ def profile():
 def socialMedia():
     if "user" in session:
       user = session["user"]
+      #data = request.form
+      #print(data)
+      if request.method =='POST':
+          mediaPost = request.form.get('mediaPost')
+
+          if len(mediaPost) < 1:
+              flash(f'Post must be longer than 1 character','danger')
+          #add mediaPost to database
       return render_template('socialMedia.html',userName=user)
     else:
       return redirect(url_for('login'))
