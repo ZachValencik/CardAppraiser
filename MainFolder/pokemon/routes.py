@@ -115,10 +115,16 @@ def profile():
 def socialMedia():
     if "user" in session:
       user = session["user"]
+      cur = mysql.connection.cursor()
+      cur.execute("SELECT * FROM SocialMedia")
+      dataMediaPosts = cur.fetchall()
       #data = request.form
       #print(data)
       if request.method == 'POST':
         mediaPost = request.form.get('mediaPost')
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM SocialMedia")
+        dataMediaPosts = cur.fetchall()
 
         if len(mediaPost) < 1:
           flash(f'Post must include more than 1 character','danger')
@@ -127,10 +133,10 @@ def socialMedia():
           cur.execute("INSERT INTO SocialMedia(post,username) VALUES(%s,%s)",(mediaPost,user))
           mysql.connection.commit()
           cur.close()
-          flash(f'Your post was published','success') # A flash method that alerts the user that the form was completed
-          #return render_template('register.html',title='register'),200
+          flash(f'Your post was published','success') # A flash method that alerts the user that their post was completed
+          return render_template('socialMedia.html',title='Pokemon Forum', userName=user, dataMediaPosts=dataMediaPosts)
 
-      return render_template('socialMedia.html',userName=user)
+      return render_template('socialMedia.html',userName=user, dataMediaPosts=dataMediaPosts)
     else:
       return redirect(url_for('login'))
   
