@@ -122,6 +122,7 @@ def socialMedia():
       #print(data)
       if request.method == 'POST':
         mediaPost = request.form.get('mediaPost')
+        image = request.files['img']
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM SocialMedia")
         dataMediaPosts = cur.fetchall()
@@ -130,7 +131,7 @@ def socialMedia():
           flash(f'Post must include more than 1 character','danger')
         else:
           cur = mysql.connection.cursor()
-          cur.execute("INSERT INTO SocialMedia(post,username) VALUES(%s,%s)",(mediaPost,user))
+          cur.execute("INSERT INTO SocialMedia(post,username,image) VALUES(%s,%s,%s)",(mediaPost,user,image.mimetype))
           mysql.connection.commit()
           cur.close()
           flash(f'Your post was published','success') # A flash method that alerts the user that their post was completed
