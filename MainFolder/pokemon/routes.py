@@ -131,7 +131,10 @@ def socialMedia():
           flash(f'Post must include more than 1 character','danger')
         else:
           cur = mysql.connection.cursor()
-          cur.execute("INSERT INTO SocialMedia(post,username,image) VALUES(%s,%s,%s)",(mediaPost,user,image.mimetype))
+          if(image==None):
+            cur.execute("INSERT INTO SocialMedia(post,username) VALUES(%s,%s)",(mediaPost,user))
+          else:
+            cur.execute("INSERT INTO SocialMedia(post,username,image) VALUES(%s,%s,%s)",(mediaPost,user,image.read()))
           mysql.connection.commit()
           cur.close()
           flash(f'Your post was published','success') # A flash method that alerts the user that their post was completed
