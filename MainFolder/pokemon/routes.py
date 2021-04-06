@@ -127,6 +127,7 @@ def socialMedia():
       #print(data)
       if request.method == 'POST':
         mediaPost = request.form.get('mediaPost')
+        
         image = request.files['img']
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM SocialMedia")
@@ -142,7 +143,7 @@ def socialMedia():
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             
-            cur.execute("INSERT INTO SocialMedia(post,username,image) VALUES(%s,%s,%s)",(mediaPost,user,image.read()))
+            cur.execute("INSERT INTO SocialMedia(post,username,image) VALUES(%s,%s,%s)",(mediaPost,user,image.filename))
             
           
 

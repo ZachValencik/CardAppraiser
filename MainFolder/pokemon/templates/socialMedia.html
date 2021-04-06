@@ -25,8 +25,14 @@
     <tbody>
         {% for mPosts in dataMediaPosts %}
         <tr>
+            {% if mPosts.image %}
+            
+            <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>
+            <td>{{mPosts.username}}</td>
+            {% else %}
             <td>{{mPosts.post}}</td>
             <td>{{mPosts.username}}</td>
+            {% endif %}
         </tr>
         {% endfor%}
     </tbody>
