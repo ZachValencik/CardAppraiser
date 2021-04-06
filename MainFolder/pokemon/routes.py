@@ -1,9 +1,14 @@
 #import secrets,os
+import os
 from PIL import Image # this is so we can resize the images so it doesnt take up a lot of sapce if its from a large image
 from flask import render_template,url_for,flash,redirect,request,abort,session
 from flask_mail import Mail,Message
 from itsdangerous import URLSafeTimedSerializer,SignatureExpired
 from pokemon import app,bcrypt,mysql
+from werkzeug.utils import secure_filename 
+UPLOAD_FOLDER = './pokemon/static/profile_pics'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #from pokemon.models import User
 #from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
 #from flask_login import login_user,current_user,logout_user,login_required
@@ -134,7 +139,13 @@ def socialMedia():
           if(image==None):
             cur.execute("INSERT INTO SocialMedia(post,username) VALUES(%s,%s)",(mediaPost,user))
           else:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            
             cur.execute("INSERT INTO SocialMedia(post,username,image) VALUES(%s,%s,%s)",(mediaPost,user,image.read()))
+            
+          
+
           mysql.connection.commit()
           cur.close()
           flash(f'Your post was published','success') # A flash method that alerts the user that their post was completed
