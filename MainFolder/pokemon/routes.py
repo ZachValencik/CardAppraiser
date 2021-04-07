@@ -123,8 +123,6 @@ def socialMedia():
       cur = mysql.connection.cursor()
       cur.execute("SELECT * FROM SocialMedia")
       dataMediaPosts = cur.fetchall()
-      #data = request.form
-      #print(data)
       if request.method == 'POST':
         mediaPost = request.form.get('mediaPost')
         image = request.files['img']
@@ -133,6 +131,7 @@ def socialMedia():
         dataMediaPosts = cur.fetchall()
 
         if len(mediaPost) < 1:
+
           flash(f'Post must include more than 1 character','danger')
         else:
           cur = mysql.connection.cursor()
@@ -149,7 +148,9 @@ def socialMedia():
           mysql.connection.commit()
           cur.close()
           flash(f'Your post was published','success') # A flash method that alerts the user that their post was completed
-          return render_template('socialMedia.html',title='Pokemon Forum', userName=user, dataMediaPosts=dataMediaPosts)
+          #return render_template('socialMedia.html',title='Pokemon Forum', userName=user, dataMediaPosts=dataMediaPosts)
+          return redirect(url_for('socialMedia'))
+
 
       return render_template('socialMedia.html',userName=user, dataMediaPosts=dataMediaPosts)
     else:
