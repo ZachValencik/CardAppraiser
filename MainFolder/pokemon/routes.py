@@ -127,7 +127,6 @@ def socialMedia():
       #print(data)
       if request.method == 'POST':
         mediaPost = request.form.get('mediaPost')
-        
         image = request.files['img']
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM SocialMedia")
@@ -137,7 +136,7 @@ def socialMedia():
           flash(f'Post must include more than 1 character','danger')
         else:
           cur = mysql.connection.cursor()
-          if(image==None):
+          if(image.filename==''):
             cur.execute("INSERT INTO SocialMedia(post,username) VALUES(%s,%s)",(mediaPost,user))
           else:
             filename = secure_filename(image.filename)
