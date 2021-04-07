@@ -6,5 +6,29 @@
 <h1>Pokèmon - Profile of {{userName}}</h1>
 {% endif %}
 
+<table class="table align-middle table-bordered table-striped table-dark table-hover" align="center" id="dataMediaPosts">
+    <caption>List of pervious posts</caption>
+    <thead class="thead-dark">
+        <tr>
+            <th>Post</th>
+            <th>User</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mPosts in dataMediaPosts %}
+        <tr>
+            {% if mPosts.image %}
+            <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>
+            <td>{{mPosts.username}}</td>
+            {% else %}
+            <td>{{mPosts.post}}</td>
+            <td>{{mPosts.username}}</td>
+            {% endif %}
+        </tr>
+        {% endfor%}
+    </tbody>
+</table>
+<br />
+
 
 {% endblock content %}

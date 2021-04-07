@@ -110,10 +110,27 @@ def PokemonHome():
 def profile():
     if "user" in session:
       user = session["user"]
-      return render_template('profile.html',userName=user)
+      cur = mysql.connection.cursor()
+      cur.execute("""SELECT * FROM SocialMedia WHERE username = %s""", (user,))
+      dataMediaPosts = cur.fetchall()
+      return render_template('profile.html',userName=user,dataMediaPosts=dataMediaPosts)
     else:
       return redirect(url_for('login'))
-  
+
+
+#@app.route('/profile/<username>',methods=['GET','POST'])
+#def otherProfile(u):
+  #  if "user" in session: 
+   #   user = session["user"]
+   #   if user == u:
+   #     return render_template('profile.html',userName=user)
+   #   else:
+   #     cur = mysql.connection.cursor()
+   #     cur.execute("""SELECT * FROM SocialMedia WHERE username = %s""", (u,))
+  #      dataMediaPosts = cur.fetchall()
+  #      return render_template('profile.html',dataMediaPosts=dataMediaPosts,u=u)
+ #   else:
+  #    return redirect(url_for('login'))  
 
 
 @app.route('/social',methods=['GET','POST'])
