@@ -106,7 +106,7 @@ def PokemonHome():
 
 
 
-@app.route('/profile',methods=['GET','POST'])
+@app.route('/profile',methods=['GET','POST','DELETE'])
 def profile():
     if "user" in session:
       user = session["user"]
@@ -116,6 +116,15 @@ def profile():
       return render_template('profile.html',userName=user,dataMediaPosts=dataMediaPosts)
     else:
       return redirect(url_for('login'))
+
+
+@app.route('/deletePost/<id>',methods=['DELETE'])
+def deletePost(id):
+  print("Delte iT!!:"+ id)
+  return redirect(url_for('profile'))
+    
+
+
 
 
 #@app.route('/profile/<username>',methods=['GET','POST'])
