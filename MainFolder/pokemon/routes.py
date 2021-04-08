@@ -118,10 +118,22 @@ def profile():
       return redirect(url_for('login'))
 
 
-@app.route('/deletePost/<id>',methods=['DELETE'])
+@app.route('/deletePost/<id>',methods=['GET','DELETE'])
 def deletePost(id):
-  print("Delte iT!!:"+ id)
-  return redirect(url_for('profile'))
+  if "user" in session:
+    print(id)
+    user = session["user"]
+    print(user)
+    cur = mysql.connection.cursor()
+    sql = "DELETE FROM SocialMedia WHERE post_id = %s and username = %s"
+    adr = (int(id),user,)
+    cur.execute(sql,adr)
+    mysql.connection.commit()
+    cur.close()
+    flash(f'Post has been deleted','sucess')
+    return redirect(url_for('profile'))
+  else:
+    return redirect(url_for('login'))
     
 
 
