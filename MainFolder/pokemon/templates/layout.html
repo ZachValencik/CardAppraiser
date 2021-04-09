@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
    {% if title %}
-    <title> Pokèmon- {{ title }}</title>
+    <title> Pokémon- {{ title }}</title>
    {% else %}
-        <title>Pokèmon-</title>
+        <title> Pokémon-</title>
    {% endif %}
 
 </head>
@@ -21,7 +21,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{{ url_for('PokemonHome')}}">Pokèmon</a>
+          <a class="navbar-brand mr-4" href="{{ url_for('PokemonHome')}}">Pokémon</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -32,7 +32,7 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if userName %}
-              <a class="nav-item nav-link" href="{{ url_for('socialMedia')}}">Fourm</a>
+              <a class="nav-item nav-link" href="{{ url_for('socialMedia')}}">Forum</a>
               <a class="nav-item nav-link" href="{{ url_for('profile')}}">Profile</a>
               <a class="nav-item nav-link" href="{{ url_for('logout')}}">logout</a>
               {% else %}

@@ -2,19 +2,19 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if userName %}
-<h1 align="center"> Welcome to our Social Media forum! {{userName}}</h1>
+<h1 text-align="center"> Welcome to our Social Media forum! {{userName}}</h1>
 <br />
-<h2 align="center"> This is a test for our Forum Page</h2>
+<h2 text-align="center"> This is a test for our Forum Page</h2>
 <form method="POST" enctype="multipart/form-data">
     <textarea name="mediaPost" id="mediaPost" class="form-control"></textarea>
     <label for="img">Select image:</label>
     <input type="file" id="img" name="img" accept="image/*">
-    <div align="center">
+    <div text-align="center">
         <button type="submit" class="btn btn-primary"> Publish Post</button>
     </div>
 </form>
 <br />
-<table class="table align-middle table-bordered table-striped table-dark table-hover" align="center" id="dataMediaPosts">
+<table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
     <caption>List of pervious posts</caption>
     <thead class="thead-dark">
         <tr>
@@ -37,5 +37,6 @@
     </tbody>
 </table>
 <br />
+
 {% endif %}
 {% endblock content %}

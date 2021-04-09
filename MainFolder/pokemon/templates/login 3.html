@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="col-md-4">
+  <div class="register-login">
+    <form method="POST" action="">
+      <label for="name">User Name</label>
+      <input type="text" name="name"/>
+      <br>
+      <label for="password">Password</label>
+      <input type="password" name="password" />
+      <br>
+      <input type="submit">
+      <a class="nav-item nav-link" href="{{ url_for('register')}}">Need an Account? Sign Up!</a>
+      <a class="nav-item nav-link" href="{{ url_for('forgotPassword')}}">Forgot Password?</a>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}
