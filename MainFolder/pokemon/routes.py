@@ -117,20 +117,28 @@ def profile():
     else:
       return redirect(url_for('login'))
 
-@app.route('/editPost/<id>',methods=['GET','Post'])
+@app.route('/editPost/<id>',methods=['GET','PUT'])
 def editPost(id):
   if "user" in session:
-    print(id)
-    user = session["user"]
-    print(user)
-    cur = mysql.connection.cursor()
-    sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
-    adr = (int(id),user,)
-    cur.execute(sql,adr)
-    #mysql.connection.commit()
-    dataMediaPosts = cur.fetchall()
-    cur.close()
-    return render_template('editPost.html',userName=user,dataMediaPosts=dataMediaPosts)
+    if request.method == "GET":
+      user = session["user"]
+      cur = mysql.connection.cursor()
+      sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
+      adr = (int(id),user,)
+      rows_count =cur.execute(sql,adr)
+      #mysql.connection.commit()
+
+      if(rows_count ==0):
+        cur.close()
+        flash(f'Not your post to edit!','danger')
+        return redirect(url_for('profile'))
+      else:  
+        dataMediaPosts = cur.fetchall()
+      
+        cur.close()
+        return render_template('editPost.html',userName=user,dataMediaPosts=dataMediaPosts)
+      
+
   else:
     return redirect(url_for('login'))
     
