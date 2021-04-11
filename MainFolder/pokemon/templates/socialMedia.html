@@ -23,7 +23,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for mPosts in dataMediaPosts %}
+        {% for mPosts in dataMediaPosts|reverse %}
         <tr>
             {% if mPosts.image %}
             <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>

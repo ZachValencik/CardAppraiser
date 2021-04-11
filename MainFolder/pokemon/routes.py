@@ -189,7 +189,7 @@ def socialMedia():
           #return render_template('socialMedia.html',title='Pokemon Forum', userName=user, dataMediaPosts=dataMediaPosts)
           return redirect(url_for('socialMedia'))
 
-
+      
       return render_template('socialMedia.html',userName=user, dataMediaPosts=dataMediaPosts)
     else:
       return redirect(url_for('login'))
