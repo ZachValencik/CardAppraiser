@@ -3,7 +3,7 @@
 
 
 {% if userName %}
-<h1>Pokmon - Profile of {{userName}}</h1>
+<h1>Pokmon - Edit Post For {{userName}}</h1>
 {% endif %}
 
 <table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
@@ -12,8 +12,6 @@
         <tr>
             <th>Post</th>
             <th>User</th>
-            <th>Edit</th>
-            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -22,13 +20,9 @@
             {% if mPosts.image %}
             <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>
             <td>{{mPosts.username}}</td>
-            <td><a href = {{ url_for('editPost' ,id=mPosts.post_id) }}>Edit</a></td>
-            <td><a data-method="DELETE" href = {{ url_for('deletePost' ,id=mPosts.post_id) }}>Delete</a></td>
             {% else %}
             <td>{{mPosts.post}}</td>
             <td>{{mPosts.username}}</td>
-            <td><a href = {{ url_for('editPost' ,id=mPosts.post_id) }}>Edit</a></td>
-            <td><a data-method="DELETE" href = {{ url_for('deletePost' ,id=mPosts.post_id) }}>Delete</a></td>
             {% endif %}
         </tr>
         {% endfor%}

@@ -117,6 +117,24 @@ def profile():
     else:
       return redirect(url_for('login'))
 
+@app.route('/editPost/<id>',methods=['GET','Post'])
+def editPost(id):
+  if "user" in session:
+    print(id)
+    user = session["user"]
+    print(user)
+    cur = mysql.connection.cursor()
+    sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
+    adr = (int(id),user,)
+    cur.execute(sql,adr)
+    #mysql.connection.commit()
+    dataMediaPosts = cur.fetchall()
+    cur.close()
+    return render_template('editPost.html',userName=user,dataMediaPosts=dataMediaPosts)
+  else:
+    return redirect(url_for('login'))
+    
+
 
 @app.route('/deletePost/<id>',methods=['GET','DELETE'])
 def deletePost(id):
@@ -189,7 +207,7 @@ def socialMedia():
           #return render_template('socialMedia.html',title='Pokemon Forum', userName=user, dataMediaPosts=dataMediaPosts)
           return redirect(url_for('socialMedia'))
 
-      
+
       return render_template('socialMedia.html',userName=user, dataMediaPosts=dataMediaPosts)
     else:
       return redirect(url_for('login'))
