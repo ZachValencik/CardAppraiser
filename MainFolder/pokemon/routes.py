@@ -117,7 +117,7 @@ def profile():
     else:
       return redirect(url_for('login'))
 
-@app.route('/editPost/<id>',methods=['GET','PUT'])
+@app.route('/editPost/<id>',methods=['GET'])
 def editPost(id):
   if "user" in session:
     if request.method == "GET":
@@ -127,7 +127,6 @@ def editPost(id):
       adr = (int(id),user,)
       rows_count =cur.execute(sql,adr)
       #mysql.connection.commit()
-
       if(rows_count ==0):
         cur.close()
         flash(f'Not your post to edit!','danger')
@@ -137,10 +136,9 @@ def editPost(id):
       
         cur.close()
         return render_template('editPost.html',userName=user,dataMediaPosts=dataMediaPosts)
-      
-
   else:
     return redirect(url_for('login'))
+
     
 
 
