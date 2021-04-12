@@ -20,17 +20,29 @@
         <tr>
             <th>Post</th>
             <th>User</th>
+            <td>Time</td>
         </tr>
     </thead>
     <tbody>
         {% for mPosts in dataMediaPosts %}
         <tr>
             {% if mPosts.image %}
-            <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>
+            <td>{{mPosts.post}}
+
+<a class="lightbox" href="#{{ mPosts.image }}">
+   <img src="../static/profile_pics/{{mPosts.image}}"class="photo" width="150" height="150"/>
+</a>
+<div class="lightbox-target" id="{{ mPosts.image }}">
+   <img src="../static/profile_pics/{{mPosts.image}}"/>
+   <a class="lightbox-close" href="#"></a>
+</div>
+    </td>
             <td>{{mPosts.username}}</td>
+            <td>{{ mPosts.time }}</td>
             {% else %}
             <td>{{mPosts.post}}</td>
             <td>{{mPosts.username}}</td>
+            <td>{{ mPosts.time }}</td>
             {% endif %}
         </tr>
         {% endfor%}
