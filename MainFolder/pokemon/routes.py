@@ -97,6 +97,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('user',None)
+    session.pop('admin',None)
     return redirect(url_for('home'))
 
 
@@ -118,7 +119,12 @@ def profile():
       cur = mysql.connection.cursor()
       cur.execute("""SELECT * FROM SocialMedia WHERE username = %s""", (user,))
       dataMediaPosts = cur.fetchall()
-      return render_template('profile.html',userName=user,dataMediaPosts=dataMediaPosts)
+      if "admin" in session:
+        admin = session["admin"]
+        return render_template('profile.html',userName=user,dataMediaPosts=dataMediaPosts,admin=admin)
+      else:
+        return render_template('profile.html',userName=user,dataMediaPosts=dataMediaPosts)
+
     else:
       return redirect(url_for('login'))
 
