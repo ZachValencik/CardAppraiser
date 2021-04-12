@@ -117,41 +117,92 @@ def profile():
     else:
       return redirect(url_for('login'))
 
-@app.route('/editPost/<id>',methods=['GET','PUT'])
+@app.route('/editPost/<id>',methods=['GET','POST'])
 def editPost(id):
-  if "user" in session:
-    if request.method == "GET":
+    if "user" in session:
       user = session["user"]
       cur = mysql.connection.cursor()
       sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
       adr = (int(id),user,)
-      rows_count =cur.execute(sql,adr)
-      #mysql.connection.commit()
-      if(rows_count ==0):
-        cur.close()
-        flash(f'Not your post to edit!','danger')
-        return redirect(url_for('profile'))
-      else:  
-        dataMediaPosts = cur.fetchall()
-      
-        cur.close()
-        return render_template('editPost.html',userName=user,dataMediaPosts=dataMediaPosts)
-  else:
-    return redirect(url_for('login'))
-
-@app.route('/putPost/<id>',methods=['GET','PUT'])
-def putPost(id):
-  if "user" in session:
-      user = session["user"]
-      print("PUT!!! "+ id)
-      print(request.args.get('message'))
-      cur = mysql.connection.cursor()
-      sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
-      adr = (request.args.get('message'),int(id),user,)
       cur.execute(sql,adr)
-      mysql.connection.commit()
-      cur.close()
-      return redirect(url_for('profile'))
+      dataMediaPosts = cur.fetchall()
+      if request.method == 'POST':
+        print("In Here!!")
+        mediaPost = request.form.get('message')
+        image = request.files['img']
+        cur = mysql.connection.cursor()
+        sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
+        adr = (int(id),user,)
+        cur.execute(sql,adr)
+        dataMediaPosts = cur.fetchall()
+
+        if len(mediaPost) < 1:
+
+          flash(f'Post must include more than 1 character','danger')
+        else:
+          cur = mysql.connection.cursor()
+          if(image.filename==''):
+             sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
+             adr = (mediaPost,int(id),user,)
+             cur.execute(sql,adr)
+          else:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            sql = "UPDATE SocialMedia Set post= %s, image= %s WHERE post_id = %s and username = %s"
+            adr = (mediaPost,image.filename,int(id),user,)
+            cur.execute(sql,adr)
+
+          mysql.connection.commit()
+          cur.close()
+          flash(f'Your post was Updated','success') # A flash method that alerts the user that their post was completed
+          #return render_template('socialMedia.html',title='Pokemon Forum', userName=user, dataMediaPosts=dataMediaPosts)
+          return redirect(url_for('profile'))
+
+
+      return render_template('editPost.html',userName=user, dataMediaPosts=dataMediaPosts)
+    else:
+      return redirect(url_for('login'))
+
+
+
+
+
+
+#@app.route('/editPost/<id>',methods=['GET','PUT'])
+#def editPost(id):
+  #if "user" in session:
+   # if request.method == "GET":
+     # user = session["user"]
+      #cur = mysql.connection.cursor()
+     # sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
+     # adr = (int(id),user,)
+     # rows_count =cur.execute(sql,adr)
+      #mysql.connection.commit()
+     # if(rows_count ==0):
+      #  cur.close()
+       # flash(f'Not your post to edit!','danger')
+       # return redirect(url_for('profile'))
+     # else:  
+        #dataMediaPosts = cur.fetchall()
+      
+        #cur.close()
+       # return render_template('editPost.html',userName=user,dataMediaPosts=dataMediaPosts)
+  #else:
+    #return redirect(url_for('login'))
+
+#@app.route('/putPost/<id>',methods=['GET','PUT'])
+#def putPost(id):
+  #if "user" in session:
+  #    user = session["user"]
+   #   print("PUT!!! "+ id)
+    #  print(request.args.get('message'))
+  #    cur = mysql.connection.cursor()
+   #   sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
+   #   adr = (request.args.get('message'),int(id),user,)
+   #   cur.execute(sql,adr)
+   #   mysql.connection.commit()
+    #  cur.close()
+  #    return redirect(url_for('profile'))
 
       
   
