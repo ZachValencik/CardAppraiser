@@ -26,7 +26,15 @@
         {% for mPosts in dataMediaPosts|reverse %}
         <tr>
             {% if mPosts.image %}
-            <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>
+            <td>{{mPosts.post}}   
+                <a class="lightbox" href="#{{ mPosts.image }}">
+                <img src="../static/profile_pics/{{mPosts.image}}"class="photo" width="150" height="150"/>
+             </a>
+             <div class="lightbox-target" id="{{ mPosts.image }}">
+                <img src="../static/profile_pics/{{mPosts.image}}"/>
+                <a class="lightbox-close" href="#"></a>
+             </div>
+            </td>
             <td>{{mPosts.username}}</td>
             <td><a data-method="GET" href = {{ url_for('editPost' ,id=mPosts.post_id) }}>Edit</a></td>
             <td><a data-method="DELETE" href = {{ url_for('deletePost' ,id=mPosts.post_id) }}>Delete</a></td>
