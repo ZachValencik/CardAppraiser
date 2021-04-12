@@ -117,7 +117,7 @@ def profile():
     else:
       return redirect(url_for('login'))
 
-@app.route('/editPost/<id>',methods=['GET'])
+@app.route('/editPost/<id>',methods=['GET','PUT'])
 def editPost(id):
   if "user" in session:
     if request.method == "GET":
@@ -139,6 +139,22 @@ def editPost(id):
   else:
     return redirect(url_for('login'))
 
+@app.route('/putPost/<id>',methods=['GET','PUT'])
+def putPost(id):
+  if "user" in session:
+      user = session["user"]
+      print("PUT!!! "+ id)
+      print(request.args.get('message'))
+      cur = mysql.connection.cursor()
+      sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
+      adr = (request.args.get('message'),int(id),user,)
+      cur.execute(sql,adr)
+      mysql.connection.commit()
+      cur.close()
+      return redirect(url_for('profile'))
+
+      
+  
     
 
 

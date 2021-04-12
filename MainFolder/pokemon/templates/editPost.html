@@ -19,7 +19,7 @@
             {% if mPosts.image %}
             <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>
             <td>{{mPosts.username}}</td>
-            <form method="PUT" action="" enctype="multipart/form-data">
+            <form method="PUT" action={{ url_for('putPost' ,id=mPosts.post_id) }} enctype="multipart/form-data">
                 <label for="message">Edit Message</label><br>
                 <textarea name="message" id="message" class="form-control">{{mPosts.post}}</textarea>
                 <br>
@@ -30,7 +30,7 @@
             {% else %}
             <td>{{mPosts.post}}</td>
             <td>{{mPosts.username}}</td>
-            <form method="PUT" action="" enctype="multipart/form-data">
+            <form method="PUT" action={{ url_for('putPost' ,id=mPosts.post_id) }} enctype="multipart/form-data">
                 <label for="message">Edit Message</label><br>
                 <textarea name="message" id="message" class="form-control">{{mPosts.post}}</textarea>
                 <br>
