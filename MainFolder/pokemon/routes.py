@@ -138,8 +138,12 @@ def editPost(id):
     if "user" in session:
       user = session["user"]
       cur = mysql.connection.cursor()
-      sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
-      adr = (int(id),user,)
+      if "admin" in session:
+        sql = "Select * FROM SocialMedia WHERE post_id = %s"
+        adr = (int(id),)
+      else:
+        sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
+        adr = (int(id),user,)
       cur.execute(sql,adr)
       dataMediaPosts = cur.fetchall()
       if request.method == 'POST':
@@ -147,10 +151,14 @@ def editPost(id):
         mediaPost = request.form.get('message')
         image = request.files['img']
         cur = mysql.connection.cursor()
-        sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
-        adr = (int(id),user,)
-        cur.execute(sql,adr)
-        dataMediaPosts = cur.fetchall()
+        if "admin" in session:
+          sql = "Select * FROM SocialMedia WHERE post_id = %s"
+          adr = (int(id),)
+        else:
+          sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
+          adr = (int(id),user,)
+          cur.execute(sql,adr)
+          dataMediaPosts = cur.fetchall()
 
         if len(mediaPost) < 1:
 
@@ -158,21 +166,33 @@ def editPost(id):
         else:
           cur = mysql.connection.cursor()
           if(image.filename==''):
-             sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
-             adr = (mediaPost,int(id),user,)
-             cur.execute(sql,adr)
+            if "admin" in session:
+              sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s"
+              adr = (mediaPost,int(id),)
+              cur.execute(sql,adr)
+            else:
+              sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
+              adr = (mediaPost,int(id),user,)
+              cur.execute(sql,adr)
           else:
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            sql = "UPDATE SocialMedia Set post= %s, image= %s WHERE post_id = %s and username = %s"
-            adr = (mediaPost,image.filename,int(id),user,)
+            if "admin" in session:
+              sql = "UPDATE SocialMedia Set post= %s, image= %s WHERE post_id = %s"
+              adr = (mediaPost,image.filename,int(id))
+            else:
+              sql = "UPDATE SocialMedia Set post= %s, image= %s WHERE post_id = %s and username = %s"
+              adr = (mediaPost,image.filename,int(id),user,)
             cur.execute(sql,adr)
 
           mysql.connection.commit()
           cur.close()
           flash(f'Your post was Updated','success') # A flash method that alerts the user that their post was completed
           #return render_template('socialMedia.html',title='Pokemon Forum', userName=user, dataMediaPosts=dataMediaPosts)
-          return redirect(url_for('profile'))
+          if "admin" in session:
+            return redirect(url_for('admin'))
+          else:
+            return redirect(url_for('profile'))
 
 
       return render_template('editPost.html',userName=user, dataMediaPosts=dataMediaPosts)
@@ -185,8 +205,12 @@ def admin():
     if "user" in session:
       user = session["user"]
       if "admin" in session:
+
         admin = session["admin"]
-        return render_template('admin.html',userName=user,admin=admin)
+        cur = mysql.connection.cursor()
+        cur.execute("""SELECT * FROM SocialMedia""")
+        dataMediaPosts = cur.fetchall()
+        return render_template('admin.html',userName=user,dataMediaPosts=dataMediaPosts,admin=admin)
       else:
         return redirect(url_for('home'))
     else:
@@ -244,13 +268,22 @@ def deletePost(id):
     user = session["user"]
     print(user)
     cur = mysql.connection.cursor()
-    sql = "DELETE FROM SocialMedia WHERE post_id = %s and username = %s"
-    adr = (int(id),user,)
-    cur.execute(sql,adr)
-    mysql.connection.commit()
-    cur.close()
-    flash(f'Post has been deleted','sucess')
-    return redirect(url_for('profile'))
+    if "admin" in session:
+      sql = "DELETE FROM SocialMedia WHERE post_id = %s"
+      adr = (int(id),)
+      cur.execute(sql,adr)
+      mysql.connection.commit()
+      cur.close()
+      flash(f'Post has been deleted','sucess')
+      return redirect(url_for('admin'))
+    else:
+      sql = "DELETE FROM SocialMedia WHERE post_id = %s and username = %s"
+      adr = (int(id),user,)
+      cur.execute(sql,adr)
+      mysql.connection.commit()
+      cur.close()
+      flash(f'Post has been deleted','sucess')
+      return redirect(url_for('profile'))
   else:
     return redirect(url_for('login'))
     
