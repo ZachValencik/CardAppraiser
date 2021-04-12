@@ -33,7 +33,11 @@
             <div class="navbar-nav">
               {% if userName %}
               <a class="nav-item nav-link" href="{{ url_for('socialMedia')}}">Forum</a>
+              {% if admin %}
+              <a class="nav-item nav-link" href="{{ url_for('admin')}}">Admin</a>
+              {% else %}
               <a class="nav-item nav-link" href="{{ url_for('profile')}}">Profile</a>
+              {% endif %}
               <a class="nav-item nav-link" href="{{ url_for('logout')}}">logout</a>
               {% else %}
               <a class="nav-item nav-link" href="{{ url_for('login')}}">Login</a>

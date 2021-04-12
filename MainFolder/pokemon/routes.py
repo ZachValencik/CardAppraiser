@@ -22,7 +22,12 @@ mail = Mail(app)
 def home():
   if "user" in session:
     user = session["user"]
-    return render_template('home.html',userName=user)
+    if "admin" in session:
+      admin = session["admin"]
+      return render_template('home.html',userName=user,admin=admin)
+    else:
+      return render_template('home.html',userName=user)
+
   else: 
     return render_template('home.html')
 
@@ -175,6 +180,18 @@ def editPost(id):
       return redirect(url_for('login'))
 
 
+@app.route('/admin',methods=['GET','POST','PUT','DELETE'])
+def admin():
+    if "user" in session:
+      user = session["user"]
+      if "admin" in session:
+        admin = session["admin"]
+        return render_template('admin.html',userName=user,admin=admin)
+      else:
+        return redirect(url_for('home'))
+    else:
+      return redirect(url_for('login'))
+      
 
 
 
@@ -290,9 +307,12 @@ def socialMedia():
           flash(f'Your post was published','success') # A flash method that alerts the user that their post was completed
           #return render_template('socialMedia.html',title='Pokemon Forum', userName=user, dataMediaPosts=dataMediaPosts)
           return redirect(url_for('socialMedia'))
+      if "admin" in session:
+       admin = session["admin"]
+       return render_template('socialMedia.html',userName=user, dataMediaPosts=dataMediaPosts,admin=admin)
+      else:
+        return render_template('socialMedia.html',userName=user, dataMediaPosts=dataMediaPosts)
 
-
-      return render_template('socialMedia.html',userName=user, dataMediaPosts=dataMediaPosts)
     else:
       return redirect(url_for('login'))
   
