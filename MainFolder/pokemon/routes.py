@@ -82,6 +82,11 @@ def login():
     cur.close()
     if(bcrypt.check_password_hash(userN['password'],password)): #Checks if it returns the user
       session["user"] = user # This should only pass if user and pw are correct
+      if(userN['is_admin']==1):
+        print("Logged in as an admin!")
+        session["admin"] = userN['is_admin']
+      else:
+        print("Logged in as a regular user")
       return redirect(url_for('home'))
     else:
       flash(f'Wrong username or password!','danger')
