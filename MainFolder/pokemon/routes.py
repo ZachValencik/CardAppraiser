@@ -364,7 +364,7 @@ def forgotPassword():
   token = s.dumps(email)
   msg = Message('Reset Password ',sender="pokemoncardapp@gmail.com",recipients=[email])
   link = url_for('resetPassword',token=token,_external=True)
-  msg.body= 'Your Link is {}'.format(link)
+  msg.body= 'Password Reset Link is {}'.format(link)
   mail.send(msg)
 
   flash("A password reset has been sent to your email ",'success')  
@@ -387,6 +387,7 @@ def resetPassword(token):
         cur.execute(update)
         mysql.connection.commit()
         cur.close()
+        
         flash(f'Your Password Has Been Updated','success') # A flash method that alerts the user that the form was completed
         return redirect(url_for('login'))
 
