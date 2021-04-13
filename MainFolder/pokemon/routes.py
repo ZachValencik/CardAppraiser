@@ -52,7 +52,7 @@ def register():
         mysql.connection.commit()
         cur.close()
         flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
-        return render_template('register.html',title='register'),200
+        return redirect(url_for('login'))
       except:
         flash(f'ERROR!','danger') # A flash method that alerts the user that the form was completed
         return render_template('register.html',title='register'),400
