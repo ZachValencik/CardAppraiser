@@ -18,31 +18,9 @@ app.config['MYSQL_USER']= 'cards_S2021'
 app.config['MYSQL_PASSWORD']= 'cardsrOK!'
 app.config['MYSQL_DB']= 'cards_S2021'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-
-
-
-
-
-
-
-#db = SQLAlchemy(app)
-#login_manager = LoginManager()
-#login_manager.init_app(app)
-
-
 bcrypt = Bcrypt(app)
 mysql = MySQL(app)
 
 
 from pokemon import routes
 
-#class User(UserMixin,db.Model):
-   # id = db.Column(db.Integer,primary_key=True)
-   # username = db.Column(db.String(50),unique=True)
-   # email = db.Column(db.String(75))
-   # password = db.Column(db.String(255),unique=True)
-
-
-#@login_manager.user_loader
-#def load_user(user_id):
-    #return User.query.get(int(user_id))
