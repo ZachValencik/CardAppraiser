@@ -19,61 +19,46 @@
 </head>
 
 <body>
-    <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-        <div class="container">
-          <a class="navbar-brand mr-4" href="{{ url_for('PokemonHome')}}">Pokémon</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{{ url_for('home')}}">Home</a>
-            </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav">
-              {% if userName %}
-              <a class="nav-item nav-link" href="{{ url_for('socialMedia')}}">Forum</a>
-              {% if admin %}
-              <a class="nav-item nav-link" href="{{ url_for('admin')}}">Admin</a>
-              {% else %}
-              <a class="nav-item nav-link" href="{{ url_for('profile')}}">Profile</a>
-              {% endif %}
-              <a class="nav-item nav-link" href="{{ url_for('logout')}}">logout</a>
-              {% else %}
-              <a class="nav-item nav-link" href="{{ url_for('login')}}">Login</a>
-              <a class="nav-item nav-link" href="{{ url_for('register')}}">Register</a>
-              {% endif %}
-            </div>
-          </div>
+  
+  <!-- Navbar Right Side -->
+  <div class="top-nav">
+      {% if userName %}
+      <a class="nav-bar" href="{{ url_for('home')}}">Home</a>
+      <a class="nav-bar" href="{{ url_for('socialMedia')}}">Forum</a>
+      <a class="nav-bar" href="{{ url_for('profile')}}">Profile</a>
+      <a class="nav-bar" href="{{ url_for('logout')}}">Sign Out</a>
+      {% else %}
+      <a class="nav-bar" href="{{ url_for('home')}}">Home</a>
+      <a href="{{ url_for('login')}}">Sign In</a>
+      <a class="nav-bar" href="{{ url_for('register')}}">Register</a>
+      {% endif %}
+    </div>
+  
+
+  <!-- <main role="main" class="container"> -->
+    <!-- <div class="col-md-8"> -->
+<div class="header">
+  <a class="navbar-brand" href="{{ url_for('PokemonHome')}}"><img src="../static/css/pokemon_logo.png" class="logo" alt="Pokemon Logo"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+  </button>
+</div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %} 
+      {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{category}}">
+          {{ message }}
         </div>
-      </nav>
-    </header>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
 
-
-
-
-
-    <main role="main" class="container">
-      <div class="row">
-        <div class="col-md-8">
-          {% with messages = get_flashed_messages(with_categories=true) %} 
-          {% if messages %}
-          {% for category, message in messages %}
-            <div class="alert alert-{{category}}">
-              {{ message }}
-            </div>
-          {% endfor %}
-          {% endif %}
-          {% endwith %}
-
-          {% block content %}{% endblock %}
-          <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
-          <scrpit src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></scrpit>
-        </div>
-        
-      </div>
-    </main>
+      {% block content %}{% endblock %}
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </div>
+    
+  <!-- </main> -->
 
 
   <!-- Optional JavaScript -->
@@ -83,5 +68,4 @@
       <audio src="../static/music/PokemonThemes.mp3" controls></audio>
     </footer>
 </body>
-
 </html>

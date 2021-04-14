@@ -1,83 +1,221 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-image: url("PMbackground_3.png");
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  height: 100%;
+  width: 100%;
   color: #1129e0;
-  margin-top: 5rem;
+  margin: 0;
 }
 
 .logo {
-  height: 60px;
-  width: 175px;
+  height: 90px;
+  width: 300px;
+  margin-left: 38px;
+}
+.logo:hover{
+  -webkit-transform: scale(1.25);
 }
 
-h1, h3, h4, h5, h6 {
+h4 {
   font-family: Impact, fantasy;
   color:gold;
   -webkit-text-stroke: 0.3px black;
   text-align: center;
-  /* text-shadow: 1px 0 0 rgb(0, 38, 255), 0 -1px 0 rgb(0, 38, 255), 0 1px 0 rgb(0, 38, 255), -1px 0 rgb(0, 38, 255); */
-
 }
-h2 {
+
+h1, h2, h3, h5, h6 {
   font-family: Impact, fantasy;
+  font-size: 35px;
+  padding: 10px;
   color: white;
+  text-align: center;
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+
+.header {
   text-align: center;
 }
 
-.bg-steel {
-  background-color:black;
+.top-nav {
+  overflow: hidden;
+  background-color: black;
 }
 
-.site-header .navbar-brand {
-  font-family: sans-serif;
-  font-size: 25px;
-  color:white;
-  /* text-shadow: 1px 0 0 rgb(0, 38, 255), 0 -1px 0 rgb(0, 38, 255), 0 1px 0 rgb(0, 38, 255), -1px 0 rgb(0, 38, 255); */
-
-   
-}
-
-.site-header .navbar-nav .nav-link {
-  font-family: sans-serif;
-  color:white;
+.top-nav a{
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 18px 25px;
   text-decoration: underline;
-  /* text-shadow: 1px 0 0 rgb(0, 38, 255), 0 -1px 0 rgb(0, 38, 255), 0 1px 0 rgb(0, 38, 255), -1px 0 rgb(0, 38, 255); */
-  text-shadow: black
-
 }
 
-.site-header .navbar-nav .nav-link:hover {
-  font-size: larger;
+.top-nav a:hover {
+  background-color: gold;
+  color: black;
+  text-decoration: underline;
 }
 
-.site-header .navbar-nav .nav-link.active {
-  font-weight: 500;
+.column {
+  padding: 35px 30px 30px 30px;
+  width: 15%;
+  margin: 5%;
 }
 
-.content-section {
+.column.left{
   font-family: sans-serif;
   background-color: black;
   color: #fbff00;
-  padding: 30px 20px 30px 20px;
-  /* border: 1px solid black; */
   border-radius: 3px;
   text-align: center;
-  float: left;
-  opacity: 0.7;
+  opacity: .95;
 }
-a.nav-link {
-text-align: center;
-padding: 1px 5px 10px 5px;
-text-decoration: underline;
+
+#char {
+  height: 200px;
+  width: 200px;
+  -webkit-filter: blur(5px);
+  filter: blur(20px);
+  cursor: pointer;
+}
+
+#char:active {
+  -webkit-filter: blur(0);
+  filter: blur(0);
+  cursor: pointer;
+}
+
+.column.right{
+  font-family: sans-serif;
+  color: #fbff00;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.column.right p{
+  color: gold
+}
+
+.column.middle {
+  width: 40%;
+  text-align: center;
+}
+.column.middle p {
+  color: #fff;
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 .register-login {
-  font-family: 'Courier New', Courier, monospace;
-  background: white;
-  background-size: auto;
-  text-align: center;
-
+  border-radius: 3px;
+  opacity: .95;
+  margin-top: 3%;
+  margin-bottom: 10%;
+  margin-left: 37%;
+  margin-right: 36%;
 }
+
+form {
+  color: black;
+  background-color: black;
+  border-color: black;
+  border-radius: 5px;
+  padding: 30px;
+  text-align: left;
+}
+
+input[type=text], input[type=email], input[type=password], input[type=checkpassword] {
+  width: 75%;
+  padding: 10px 12px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+input[type=submit] {
+  width: 30%;
+  background-color: blue;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 1.5%;
+  margin-bottom: 1.5%;
+}
+
+.card-search {
+  margin-left: 37%;
+  margin-right: 36%;
+}
+
+#submit-button {
+width: 100px;
+background-color: blue;
+padding: 7px;
+border: none;
+border-radius: 3px;
+cursor: pointer;
+}
+
+#card-container {
+  align-content: center;
+  margin-left: 5.5%;
+}
+
+label[for=name], label[for=email], label[for=password], label[for=checkpassword]{
+  font-size: 21px;
+  color: gold;
+}
+
+label[for=img] {
+  font-size: 16px;
+  color: gold;
+}
+
+.register-login {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  margin-top: 6%;
+}
+
+#mediaPost {
+  
+}
+
+#dataMediaPosts {
+ width: 50%;
+}
+
+.publish {
+  width: 100px;
+  background-color: blue;
+  padding: 7px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  color: white;
+}
+
+a.nav-link {
+  text-align: center;
+  padding: 1px 5px 10px 5px;
+  text-decoration: underline;
+  }
 
 .article-title {
   color: #ff0000;
@@ -126,7 +264,7 @@ a.article-title:hover {
   font-size: 2.5rem;
 }
 
-.btn-primary{
+.btn-primary {
   color:#333;
   background-color: #ff0000;
 
@@ -139,7 +277,7 @@ label {
 }
 
 footer {
-  position:absolute;
+  position:fixed;
   bottom:0;
   width:100%;
   height:60px;   /* Height of the footer */
