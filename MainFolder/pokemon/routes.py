@@ -105,9 +105,13 @@ def logout():
 #route from signup to PokemonHome
 @app.route('/PokemonHome',methods=['GET','POST'])
 def PokemonHome():
-  if "user" in session: # if user is logged in it will render the pokemon cards, otherwise redirect to login
+  if "user" in session:
     user = session["user"]
-    return render_template('PokemonHome.html',title='PokemonHome')
+    if "admin" in session:
+      admin = session["admin"]
+      return render_template('PokemonHome.html',userName=user,admin=admin)
+    else:
+      return render_template('PokemonHome.html',userName=user)
   else:
     return redirect(url_for('login'))
 
