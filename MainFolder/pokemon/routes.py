@@ -147,7 +147,7 @@ def editPost(id):
       cur.execute(sql,adr)
       dataMediaPosts = cur.fetchall()
       if request.method == 'POST':
-        print("In Here!!")
+       
         mediaPost = request.form.get('message')
         image = request.files['img']
         cur = mysql.connection.cursor()
@@ -165,15 +165,26 @@ def editPost(id):
           flash(f'Post must include more than 1 character','danger')
         else:
           cur = mysql.connection.cursor()
-          if(image.filename==''):
+          if(image.filename=='' or request.form.getlist('check')):
             if "admin" in session:
-              sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s"
-              adr = (mediaPost,int(id),)
-              cur.execute(sql,adr)
+              if request.form.getlist('check'):
+                sql = "UPDATE SocialMedia Set post= %s, image= %s WHERE post_id = %s"
+                adr = (mediaPost,"",int(id),)
+                cur.execute(sql,adr)
+              else:
+                sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s"
+                adr = (mediaPost,int(id),)
+                cur.execute(sql,adr)
             else:
-              sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
-              adr = (mediaPost,int(id),user,)
-              cur.execute(sql,adr)
+              if request.form.getlist('check'):
+                sql = "UPDATE SocialMedia Set post= %s, image= %s WHERE post_id = %s and username = %s"
+                adr = (mediaPost,"",int(id),user,)
+                cur.execute(sql,adr)
+              else:
+                sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
+                adr = (mediaPost,int(id),user,)
+                cur.execute(sql,adr)
+
           else:
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
