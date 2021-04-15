@@ -1,0 +1,13 @@
+.pkmn-card {
+  width: 215px;
+  height: 300px;
+  margin: 15px;
+}
+.pkmn-card {
+    transition:transform 0.25s ease;
+}
+
+.pkmn-card:hover {
+    -webkit-transform:scale(1.5);
+    transform:scale(1.5);
+}

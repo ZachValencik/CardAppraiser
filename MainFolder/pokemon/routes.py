@@ -9,10 +9,13 @@ from werkzeug.utils import secure_filename
 UPLOAD_FOLDER = './pokemon/static/profile_pics'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+<<<<<<< HEAD
 #from pokemon.models import User
 #from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
 #from flask_login import login_user,current_user,logout_user,login_required
 #from flask_mail import Message
+=======
+>>>>>>> admin
 s = URLSafeTimedSerializer('ThisisaSecret!')
 app.config.from_pyfile('config.cfg')
 mail = Mail(app)
@@ -56,7 +59,11 @@ def register():
         mysql.connection.commit()
         cur.close()
         flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
+<<<<<<< HEAD
         return render_template('register.html',title='register'),200
+=======
+        return redirect(url_for('login'))
+>>>>>>> admin
       except:
         flash(f'ERROR!','danger') # A flash method that alerts the user that the form was completed
         return render_template('register.html',title='register'),400
@@ -109,9 +116,19 @@ def logout():
 #route from signup to PokemonHome
 @app.route('/PokemonHome',methods=['GET','POST'])
 def PokemonHome():
+<<<<<<< HEAD
   if "user" in session: # if user is logged in it will render the pokemon cards, otherwise redirect to login
     user = session["user"]
     return render_template('PokemonHome.html',title='PokemonHome')
+=======
+  if "user" in session:
+    user = session["user"]
+    if "admin" in session:
+      admin = session["admin"]
+      return render_template('PokemonHome.html',userName=user,admin=admin)
+    else:
+      return render_template('PokemonHome.html',userName=user)
+>>>>>>> admin
   else:
     return redirect(url_for('login'))
 
@@ -133,6 +150,7 @@ def profile():
     else:
       return redirect(url_for('login'))
 
+<<<<<<< HEAD
 @app.route('/viewPost/<id>',methods=['GET','POST'])
 def viewPost(id):
     if "user" in session:
@@ -158,6 +176,8 @@ def viewPost(id):
       return redirect(url_for('login'))
     
 
+=======
+>>>>>>> admin
 @app.route('/editPost/<id>',methods=['GET','POST'])
 def editPost(id):
     if "user" in session:
@@ -240,6 +260,7 @@ def admin():
         return redirect(url_for('home'))
     else:
       return redirect(url_for('login'))
+<<<<<<< HEAD
       
 
 
@@ -285,6 +306,8 @@ def admin():
   
     
 
+=======
+>>>>>>> admin
 
 @app.route('/deletePost/<id>',methods=['GET','DELETE'])
 def deletePost(id):
@@ -310,6 +333,7 @@ def deletePost(id):
       flash(f'Post has been deleted','sucess')
       return redirect(url_for('profile'))
   else:
+<<<<<<< HEAD
     return redirect(url_for('login'))
     
 
@@ -330,6 +354,9 @@ def deletePost(id):
  #   else:
   #    return redirect(url_for('login'))  
 
+=======
+    return redirect(url_for('login'))  
+>>>>>>> admin
 
 @app.route('/social',methods=['GET','POST'])
 def socialMedia():
@@ -389,7 +416,11 @@ def forgotPassword():
   token = s.dumps(email)
   msg = Message('Reset Password ',sender="pokemoncardapp@gmail.com",recipients=[email])
   link = url_for('resetPassword',token=token,_external=True)
+<<<<<<< HEAD
   msg.body= 'Your Link is {}'.format(link)
+=======
+  msg.body= 'Password Reset Link is {}'.format(link)
+>>>>>>> admin
   mail.send(msg)
 
   flash("A password reset has been sent to your email ",'success')  
@@ -412,6 +443,10 @@ def resetPassword(token):
         cur.execute(update)
         mysql.connection.commit()
         cur.close()
+<<<<<<< HEAD
+=======
+        
+>>>>>>> admin
         flash(f'Your Password Has Been Updated','success') # A flash method that alerts the user that the form was completed
         return redirect(url_for('login'))
 

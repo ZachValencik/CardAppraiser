@@ -4,6 +4,10 @@
 {% if userName %}
 <h1 align="center"> Welcome to our Social Media forum! {{userName}}</h1>
 <br />
+<<<<<<< HEAD
+=======
+<h2 align="center"> This is a test for our Forum Page</h2>
+>>>>>>> admin
 <form method="POST" enctype="multipart/form-data">
     <textarea name="mediaPost" id="mediaPost" class="form-control"></textarea>
     <label for="img">Select image:</label>
@@ -19,8 +23,12 @@
         <tr>
             <th>Post</th>
             <th>User</th>
+<<<<<<< HEAD
             <th>Time</th>
             <th>Post Link</th>
+=======
+            <td>Time</td>
+>>>>>>> admin
         </tr>
     </thead>
     <tbody>
@@ -39,12 +47,18 @@
     </td>
             <td>{{mPosts.username}}</td>
             <td>{{ mPosts.time }}</td>
+<<<<<<< HEAD
             <td><a data-method="POST" href = {{ url_for('viewPost' ,id=mPosts.post_id) }}>View Post</a></td>
+=======
+>>>>>>> admin
             {% else %}
             <td>{{mPosts.post}}</td>
             <td>{{mPosts.username}}</td>
             <td>{{ mPosts.time }}</td>
+<<<<<<< HEAD
             <td><a data-method="POST" href = {{ url_for('viewPost' ,id=mPosts.post_id) }}>View Post</a></td>
+=======
+>>>>>>> admin
             {% endif %}
         </tr>
         {% endfor%}
