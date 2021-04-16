@@ -5,6 +5,7 @@ from flask_login import LoginManager,UserMixin,login_user
 from flask_mail import Mail
 from flask_mysqldb import MySQL,MySQLdb
 from flask_mail import Mail,Message
+
 #import yaml
 
 app = Flask(__name__)
