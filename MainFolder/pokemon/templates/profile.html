@@ -15,9 +15,10 @@
 <table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
     <caption>List of pervious posts</caption>
     <thead class="thead-dark">
-        <tr>
+        <tr align="center">
             <th>Post</th>
             <th>User</th>
+            <th>Post Link</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -36,11 +37,13 @@
              </div>
             </td>
             <td>{{mPosts.username}}</td>
+            <td><a data-method="POST" href = {{ url_for('viewPost' ,id=mPosts.post_id) }}>View Post</a></td>
             <td><a data-method="GET" href = {{ url_for('editPost' ,id=mPosts.post_id) }}>Edit</a></td>
             <td><a data-method="DELETE" href = {{ url_for('deletePost' ,id=mPosts.post_id) }}>Delete</a></td>
             {% else %}
             <td>{{mPosts.post}}</td>
             <td>{{mPosts.username}}</td>
+            <td><a data-method="POST" href = {{ url_for('viewPost' ,id=mPosts.post_id) }}>View Post</a></td>
             <td><a data-method="GET" href = {{ url_for('editPost' ,id=mPosts.post_id) }}>Edit</a></td>
             <td><a data-method="DELETE" href = {{ url_for('deletePost' ,id=mPosts.post_id) }}>Delete</a></td>
             {% endif %}

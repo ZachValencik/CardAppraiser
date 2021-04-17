@@ -138,21 +138,30 @@ def viewPost(id):
     if "user" in session:
       user = session["user"]
       cur = mysql.connection.cursor()
+      curComments = mysql.connection.cursor()
       if "admin" in session:
-        sql = "Select * FROM SocialMedia WHERE post_id = %s"
+        sql = "SELECT * FROM SocialMedia WHERE post_id = %s" #grabs post from DB with post_id THIS WORKS
+        #sql = "SELECT * FROM SocialMedia INNER JOIN SocialMediaComments ON SocialMedia.post_id = SocialMediaComments.post_id WHERE post_id = %s"
+        #sql = "SELECT SocialMedia.post_id, SocialMedia.post, SocialMedia.username, SocialMedia.image, SocialMedia.time, SocialMediaComments.comment, SocialMediaComments.username, SocialMediaComments.image, SocialMediaComments.time FROM SocialMedia INNER JOIN SocialMediaComments ON SocialMedia.post_id = SocialMediaComments.post_id where SocialMedia.post_id = %s"
+        sqlComments = "SELECT * FROM SocialMediaComments WHERE post_id = %s"
         adr = (int(id),)
       else:
-        sql = "Select * FROM SocialMedia WHERE post_id = %s"
+        sql = "Select * FROM SocialMedia WHERE post_id = %s" #grabs post from DB with post_id THIS WORKS
+        #sql = "SELECT * FROM SocialMedia INNER JOIN SocialMediaComments ON SocialMedia.post_id = SocialMediaComments.post_id WHERE post_id = %s"
+        #sql = "SELECT SocialMedia.post_id, SocialMedia.post, SocialMedia.username, SocialMedia.image, SocialMedia.time, SocialMediaComments.comment, SocialMediaComments.username, SocialMediaComments.image, SocialMediaComments.time FROM SocialMedia INNER JOIN SocialMediaComments ON SocialMedia.post_id = SocialMediaComments.post_id where SocialMedia.post_id = %s"
+        sqlComments = "SELECT * FROM SocialMediaComments WHERE post_id = %s"
         adr = (int(id),)
       cur.execute(sql,adr)
+      curComments.execute(sqlComments,adr)
 
       #cur.execute("""SELECT * FROM SocialMedia WHERE post_id = %s""", (int(id),))
       dataMediaPosts = cur.fetchall()
+      commentsMediaPosts = curComments.fetchall()
       if "admin" in session:
         admin = session["admin"]
-        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts,admin=admin)
+        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts,commentsMediaPosts=commentsMediaPosts, admin=admin)
       else:
-        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts)
+        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts, commentsMediaPosts=commentsMediaPosts)
 
     else:
       return redirect(url_for('login'))

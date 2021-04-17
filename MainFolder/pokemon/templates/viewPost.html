@@ -5,9 +5,9 @@
 {% if userName %}
 
 {% if admin %}
-<h1>Pokemon</h1>
+<h1>Pokemon Admin</h1>
 {% else %}
-<h1>Pokemon</h1>
+<h1>Pokemon User</h1>
 {% endif %}
 
 {% endif %}
@@ -41,6 +41,43 @@
         {% endfor%}
     </tbody>
 </table>
+<br />
+
+{% if commentsMediaPosts %}
+<h1>Comments</h1>
+<table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="commentsMediaPosts">
+    <thead class="thead-dark">
+        <tr>
+            <th>Post</th>
+            <th>User</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cPosts in commentsMediaPosts %}
+        <tr>
+            {% if cPosts.image %}
+            <td>{{cPosts.comment}}   
+                <a class="lightbox" href="#{{ mPosts.image }}">
+                <img src="../static/profile_pics/{{mPosts.image}}"class="photo" width="150" height="150"/>
+             </a>
+             <div class="lightbox-target" id="{{ mPosts.image }}">
+                <img src="../static/profile_pics/{{mPosts.image}}"/>
+                <a class="lightbox-close" href="#"></a>
+             </div>
+            </td>
+            <td>{{cPosts.username}}</td>
+            {% else %}
+            <td>{{cPosts.comment}}</td>
+            <td>{{cPosts.username}}</td>
+            {% endif %}
+        </tr>
+        {% endfor%}
+    </tbody>
+</table>
+{% else %}
+<br />
+
+{% endif %}
 <br />
 
 
