@@ -1,21 +1,33 @@
-#import secrets,os
+# import secrets,os
+import MySQLdb
+
+import datetime
 import os
-from PIL import Image # this is so we can resize the images so it doesnt take up a lot of sapce if its from a large image
-from flask import render_template,url_for,flash,redirect,request,abort,session
-from flask_mail import Mail,Message
-from itsdangerous import URLSafeTimedSerializer,SignatureExpired
-from pokemon import app,bcrypt,mysql
-from werkzeug.utils import secure_filename 
+from PIL import \
+    Image  # this is so we can resize the images so it doesnt take up a lot of sapce if its from a large image
+from flask import render_template, url_for, flash, redirect, request, abort, session, jsonify
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from pokemon import app, bcrypt, mysql
+from werkzeug.utils import secure_filename
+from flask_dropzone import Dropzone
+dropzone = Dropzone(app)
+UPLOAD2_FOLDER = './pokemon/static/uploads'
+#ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD2_FOLDER'] = UPLOAD2_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
 UPLOAD_FOLDER = './pokemon/static/profile_pics'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-#from pokemon.models import User
-#from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
-#from flask_login import login_user,current_user,logout_user,login_required
-#from flask_mail import Message
+# from pokemon.models import User
+# from pokemon.forms import RegistrationForm,LoginForm,UpdateAccountForm,RequestRestForm,ResetPasswordForm
+# from flask_login import login_user,current_user,logout_user,login_required
+# from flask_mail import Message
 s = URLSafeTimedSerializer('ThisisaSecret!')
 app.config.from_pyfile('config.cfg')
 mail = Mail(app)
+
 
 @app.route('/')
 @app.route('/home') # how to make two routes work on same page
@@ -32,38 +44,37 @@ def home():
     return render_template('home.html')
 
 
-
-
-@app.route('/register',methods=['GET','POST']) # need [methods=['GET','POST'] in able to use to submit data
+@app.route('/register', methods=['GET', 'POST'])  # need [methods=['GET','POST'] in able to use to submit data
 def register():
-  if request.method == 'POST':
-    userDetails = request.form
-    name = userDetails['name']
-    if len(name)<=0:
-      flash(f'Must Enter a username','danger')
-      return render_template('register.html',title='register'),400
+    if request.method == 'POST':
+        userDetails = request.form
+        name = userDetails['name']
+        if len(name) <= 0:
+            flash(f'Must Enter a username', 'danger')
+            return render_template('register.html', title='register'), 400
 
-    email = userDetails['email']
-    if userDetails['password'] != userDetails['checkpassword']:
-          #return 'Passwords DontMatch', 400
-          flash(f'Passwords dont match!','danger')
-          return render_template('register.html',title='register'),400
-    else:
-      try:
-        hashed_password= bcrypt.generate_password_hash(userDetails['password']).decode('utf-8') # creating a hashed pw 
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO User(username,email,password) VALUES(%s,%s,%s)",(name,email,hashed_password))
-        mysql.connection.commit()
-        cur.close()
-        flash(f'Your account has been created!','success') # A flash method that alerts the user that the form was completed
-        return render_template('register.html',title='register'),200
-      except:
-        flash(f'ERROR!','danger') # A flash method that alerts the user that the form was completed
-        return render_template('register.html',title='register'),400
+        email = userDetails['email']
+        if userDetails['password'] != userDetails['checkpassword']:
+            # return 'Passwords DontMatch', 400
+            flash(f'Passwords dont match!', 'danger')
+            return render_template('register.html', title='register'), 400
+        else:
+            try:
+                hashed_password = bcrypt.generate_password_hash(userDetails['password']).decode(
+                    'utf-8')  # creating a hashed pw
+                cur = mysql.connection.cursor()
+                cur.execute("INSERT INTO User(username,email,password) VALUES(%s,%s,%s)",
+                            (name, email, hashed_password))
+                mysql.connection.commit()
+                cur.close()
+                flash(f'Your account has been created!',
+                      'success')  # A flash method that alerts the user that the form was completed
+                return render_template('register.html', title='register'), 200
+            except:
+                flash(f'ERROR!', 'danger')  # A flash method that alerts the user that the form was completed
+                return render_template('register.html', title='register'), 400
 
-  return render_template('register.html',title='register')
-
-
+    return render_template('register.html', title='register')
 
 
 @app.route('/login',methods=['GET','POST'])
@@ -99,21 +110,58 @@ def login():
   else:
     return render_template('login.html',title='login'),400
 
+
 @app.route('/logout')
 def logout():
-    session.pop('user',None)
-    session.pop('admin',None)
-    return redirect(url_for('home'))
+  session.pop('user', None)
+  session.pop('admin',None)
+  return redirect(url_for('home'))
 
-
-#route from signup to PokemonHome
-@app.route('/PokemonHome',methods=['GET','POST'])
+# route from signup to PokemonHome
+@app.route('/PokemonHome', methods=['GET', 'POST'])
 def PokemonHome():
-  if "user" in session: # if user is logged in it will render the pokemon cards, otherwise redirect to login
-    user = session["user"]
-    return render_template('PokemonHome.html',title='PokemonHome')
-  else:
-    return redirect(url_for('login'))
+    if "user" in session:  # if user is logged in it will render the pokemon cards, otherwise redirect to login
+        user = session["user"]
+        return render_template('PokemonHome.html', title='PokemonHome')
+    else:
+        return redirect(url_for('login'))
+
+
+# route from signup to myList
+@app.route('/myList', methods=['GET', 'POST'])
+def myList():
+    if "user" in session:  # if user is logged in it will render the pokemon cards, otherwise redirect to login
+        user = session["user"]
+        return render_template('myList.html', title='myList')
+    else:
+        return redirect(url_for('login'))
+
+
+# //
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route("/upload", methods=["POST", "GET"])
+def upload():
+    if request.method == 'POST':
+        user = session["user"]
+        f= request.files.get('file')
+        f.save(os.path.join(app.config['UPLOAD2_FOLDER'], f.filename))
+        d1 = datetime.datetime.now()
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO uploads(file_name,user,upload_time) VALUES(%s,%s,%s)",
+                            (f.filename,user,d1))
+        mysql.connection.commit()
+        cur.close()
+
+
+    return render_template('myList.html')
+  
+
+
 
 
 
@@ -130,33 +178,6 @@ def profile():
       else:
         return render_template('profile.html',userName=user,dataMediaPosts=dataMediaPosts)
 
-    else:
-      return redirect(url_for('login'))
-
-@app.route('/viewPost/<id>',methods=['GET','POST'])
-def viewPost(id):
-    if "user" in session:
-      user = session["user"]
-      cur = mysql.connection.cursor()
-      if "admin" in session:
-        sql = "Select * FROM SocialMedia WHERE post_id = %s"
-        adr = (int(id),)
-      else:
-        sql = "Select * FROM SocialMedia WHERE post_id = %s"
-        adr = (int(id),)
-      cur.execute(sql,adr)
-
-      #cur.execute("""SELECT * FROM SocialMedia WHERE post_id = %s""", (int(id),))
-      dataMediaPosts = cur.fetchall()
-      if "admin" in session:
-        admin = session["admin"]
-        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts,admin=admin)
-      else:
-        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts)
-
-    else:
-      return redirect(url_for('login'))
-    
 
 @app.route('/editPost/<id>',methods=['GET','POST'])
 def editPost(id):
@@ -235,6 +256,47 @@ def editPost(id):
     else:
       return redirect(url_for('login'))
 
+@app.route('/viewPost/<id>',methods=['GET','POST'])
+def viewPost(id):
+    if "user" in session:
+      user = session["user"]
+      cur = mysql.connection.cursor()
+      if "admin" in session:
+        sql = "Select * FROM SocialMedia WHERE post_id = %s"
+        adr = (int(id),)
+      else:
+        sql = "Select * FROM SocialMedia WHERE post_id = %s"
+        adr = (int(id),)
+      cur.execute(sql,adr)
+
+      #cur.execute("""SELECT * FROM SocialMedia WHERE post_id = %s""", (int(id),))
+      dataMediaPosts = cur.fetchall()
+      if "admin" in session:
+        admin = session["admin"]
+        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts,admin=admin)
+      else:
+        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts)
+
+    else:
+      return redirect(url_for('login'))
+
+@app.route('/deletePost/<id>', methods=['GET', 'DELETE'])
+def deletePost(id):
+    if "user" in session:
+        print(id)
+        user = session["user"]
+        print(user)
+        cur = mysql.connection.cursor()
+        sql = "DELETE FROM SocialMedia WHERE post_id = %s and username = %s"
+        adr = (int(id), user,)
+        cur.execute(sql, adr)
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Post has been deleted', 'sucess')
+        return redirect(url_for('profile'))
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route('/admin',methods=['GET','POST','PUT','DELETE'])
 def admin():
@@ -251,98 +313,8 @@ def admin():
         return redirect(url_for('home'))
     else:
       return redirect(url_for('login'))
-      
 
-
-
-
-#@app.route('/editPost/<id>',methods=['GET','PUT'])
-#def editPost(id):
-  #if "user" in session:
-   # if request.method == "GET":
-     # user = session["user"]
-      #cur = mysql.connection.cursor()
-     # sql = "Select * FROM SocialMedia WHERE post_id = %s and username = %s"
-     # adr = (int(id),user,)
-     # rows_count =cur.execute(sql,adr)
-      #mysql.connection.commit()
-     # if(rows_count ==0):
-      #  cur.close()
-       # flash(f'Not your post to edit!','danger')
-       # return redirect(url_for('profile'))
-     # else:  
-        #dataMediaPosts = cur.fetchall()
-      
-        #cur.close()
-       # return render_template('editPost.html',userName=user,dataMediaPosts=dataMediaPosts)
-  #else:
-    #return redirect(url_for('login'))
-
-#@app.route('/putPost/<id>',methods=['GET','PUT'])
-#def putPost(id):
-  #if "user" in session:
-  #    user = session["user"]
-   #   print("PUT!!! "+ id)
-    #  print(request.args.get('message'))
-  #    cur = mysql.connection.cursor()
-   #   sql = "UPDATE SocialMedia Set post= %s WHERE post_id = %s and username = %s"
-   #   adr = (request.args.get('message'),int(id),user,)
-   #   cur.execute(sql,adr)
-   #   mysql.connection.commit()
-    #  cur.close()
-  #    return redirect(url_for('profile'))
-
-      
-  
-    
-
-
-@app.route('/deletePost/<id>',methods=['GET','DELETE'])
-def deletePost(id):
-  if "user" in session:
-    print(id)
-    user = session["user"]
-    print(user)
-    cur = mysql.connection.cursor()
-    if "admin" in session:
-      sql = "DELETE FROM SocialMedia WHERE post_id = %s"
-      adr = (int(id),)
-      cur.execute(sql,adr)
-      mysql.connection.commit()
-      cur.close()
-      flash(f'Post has been deleted','sucess')
-      return redirect(url_for('admin'))
-    else:
-      sql = "DELETE FROM SocialMedia WHERE post_id = %s and username = %s"
-      adr = (int(id),user,)
-      cur.execute(sql,adr)
-      mysql.connection.commit()
-      cur.close()
-      flash(f'Post has been deleted','sucess')
-      return redirect(url_for('profile'))
-  else:
-    return redirect(url_for('login'))
-    
-
-
-
-
-#@app.route('/profile/<username>',methods=['GET','POST'])
-#def otherProfile(u):
-  #  if "user" in session: 
-   #   user = session["user"]
-   #   if user == u:
-   #     return render_template('profile.html',userName=user)
-   #   else:
-   #     cur = mysql.connection.cursor()
-   #     cur.execute("""SELECT * FROM SocialMedia WHERE username = %s""", (u,))
-  #      dataMediaPosts = cur.fetchall()
-  #      return render_template('profile.html',dataMediaPosts=dataMediaPosts,u=u)
- #   else:
-  #    return redirect(url_for('login'))  
-
-
-@app.route('/social',methods=['GET','POST'])
+@app.route('/socialMedia',methods=['GET','POST','PUT','DELETE'])
 def socialMedia():
     if "user" in session:
       user = session["user"]
@@ -384,48 +356,45 @@ def socialMedia():
 
     else:
       return redirect(url_for('login'))
-  
 
-@app.route('/forgotPassword',methods=['GET','POST'])
+
+@app.route('/forgotPassword', methods=['GET', 'POST'])
 def forgotPassword():
-  
-  if "user" in session:
-    user = session["user"]
-    return redirect(url_for('home'))
+    if "user" in session:
+        user = session["user"]
+        return redirect(url_for('home'))
+
+    if request.method == "GET":
+        return render_template('forgotPassword.html')
+    email = request.form["email"]
+    token = s.dumps(email)
+    msg = Message('Reset Password ', sender="pokemoncardapp@gmail.com", recipients=[email])
+    link = url_for('resetPassword', token=token, _external=True)
+    msg.body = 'Your Link is {}'.format(link)
+    mail.send(msg)
+
+    flash("A password reset has been sent to your email ", 'success')
+    return render_template('forgotPassword.html')
 
 
-  if request.method == "GET":
-            return render_template('forgotPassword.html')
-  email = request.form["email"]
-  token = s.dumps(email)
-  msg = Message('Reset Password ',sender="pokemoncardapp@gmail.com",recipients=[email])
-  link = url_for('resetPassword',token=token,_external=True)
-  msg.body= 'Your Link is {}'.format(link)
-  mail.send(msg)
-
-  flash("A password reset has been sent to your email ",'success')  
-  return render_template('forgotPassword.html')
-
-
-@app.route('/passwordReset/<token>',methods=['GET','POST'])
+@app.route('/passwordReset/<token>', methods=['GET', 'POST'])
 def resetPassword(token):
+    try:
+        email = s.loads(token, max_age=200)
+    except SignatureExpired:
+        flash("Token Expired")
+        return redirect(url_for('forgotPassword'))
 
-  try:
-    email = s.loads(token,max_age=200)
-  except SignatureExpired:
-    flash("Token Expired")
-    return redirect(url_for('forgotPassword'))
-
-  if request.method == 'POST':
-        hashed_password= bcrypt.generate_password_hash(request.form['password']).decode('utf-8') # creating a hashed pw 
+    if request.method == 'POST':
+        hashed_password = bcrypt.generate_password_hash(request.form['password']).decode(
+            'utf-8')  # creating a hashed pw
         cur = mysql.connection.cursor()
-        update = "UPDATE User SET password= '{}' WHERE email= '{}'".format(hashed_password,email)
+        update = "UPDATE User SET password= '{}' WHERE email= '{}'".format(hashed_password, email)
         cur.execute(update)
         mysql.connection.commit()
         cur.close()
-        flash(f'Your Password Has Been Updated','success') # A flash method that alerts the user that the form was completed
+        flash(f'Your Password Has Been Updated',
+              'success')  # A flash method that alerts the user that the form was completed
         return redirect(url_for('login'))
 
-  return render_template('resetPassword.html')
-      
-        
+    return render_template('resetPassword.html')

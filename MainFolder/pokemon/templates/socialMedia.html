@@ -1,15 +1,16 @@
-
-{% extends "layout.html" %}
+<link rel="stylesheet" href="../static/css/socialMedia.css">
+<!-- {% extends "layout.html" %} -->
 {% block content %}
 {% if userName %}
-<h1 align="center"> Welcome to our Social Media forum! {{userName}}</h1>
+<h1 align="center"> Welcome to our Social Media forum, {{userName}} !</h1>
 <br />
-<form method="POST" enctype="multipart/form-data">
+<h2 align="center"> This is a test for our Forum Page</h2>
+<form method="POST" enctype="multipart/form-data" id="mediaForm">
     <textarea name="mediaPost" id="mediaPost" class="form-control"></textarea>
     <label for="img">Select image:</label>
     <input type="file" id="img" name="img" accept="image/*">
     <div align="center">
-        <button type="submit" class="btn btn-primary"> Publish Post</button>
+        <button type="submit" class="publish"> Publish Post</button>
     </div>
 </form>
 <br />

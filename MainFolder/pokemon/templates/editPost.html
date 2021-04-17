@@ -3,7 +3,7 @@
 
 
 {% if userName %}
-<h1>Pokmon - Edit Post For {{userName}}</h1>
+<h1>Pokémon - Edit Post For {{userName}}</h1>
 {% endif %}
 
 <table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
@@ -25,11 +25,6 @@
                 <br>
                 <input type="file" id="img" name="img" accept="image/*">
                 <br>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="check" value="edit"> Delete Photo?
-                    </label>
-                    </div>
                 <input type="submit">
               </form>
             {% else %}
