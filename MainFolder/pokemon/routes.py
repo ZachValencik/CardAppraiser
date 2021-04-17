@@ -135,8 +135,17 @@ def allowed_file(filename):
 @app.route("/upload", methods=["POST", "GET"])
 def upload():
     if request.method == 'POST':
+        user = session["user"]
         f= request.files.get('file')
         f.save(os.path.join(app.config['UPLOAD2_FOLDER'], f.filename))
+        d1 = datetime.datetime.now()
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO uploads(file_name,user,upload_time) VALUES(%s,%s,%s)",
+                            (f.filename,user,d1))
+        mysql.connection.commit()
+        cur.close()
+
+
     return render_template('myList.html')
   
 
