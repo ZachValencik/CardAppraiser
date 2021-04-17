@@ -157,6 +157,31 @@ def viewPost(id):
       #cur.execute("""SELECT * FROM SocialMedia WHERE post_id = %s""", (int(id),))
       dataMediaPosts = cur.fetchall()
       commentsMediaPosts = curComments.fetchall()
+
+      if request.method == 'POST':
+        commentPost = request.form.get('commentPost')
+        image = request.files['img']
+        curComments = mysql.connection.cursor()
+        curComments.execute("SELECT * FROM SocialMediaComments")
+        commentsMediaPosts = curComments.fetchall()
+
+        if len(commentPost) < 1:
+          flash(f'Post must include more than 1 character', 'danger')
+        else:
+          cur = mysql.connection.cursor()
+          if(image.filename==''):
+            cur.execute("INSERT INTO SocialMediaComments(comment,username,post_id) VALUES(%s,%s,%s)", (commentPost,user,adr))
+          else:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            cur.execute("INSERT INTO SocialMediaComments(comment,username,image,post_id) VALUES(%s,%s,%s,%s)",(commentPost,user,image.filename,adr))
+          mysql.connection.commit()
+          cur.close()
+          flash(f'Your comment was published','success')
+          return redirect(url_for('viewPost', id = id))
+          #return redirect(url_for('viewPost/<id>'))
+          #return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts)
       if "admin" in session:
         admin = session["admin"]
         return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts,commentsMediaPosts=commentsMediaPosts, admin=admin)

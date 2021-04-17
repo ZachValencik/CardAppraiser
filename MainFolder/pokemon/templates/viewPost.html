@@ -43,6 +43,16 @@
 </table>
 <br />
 
+<h1>What are your thoughts?</h1>
+<form method="POST" enctype="multipart/form-data">
+    <textarea name="commentPost" id="commentPost" class="form-control"></textarea>
+    <label for="img">Select image:</label>
+    <input type="file" id="img" name="img" accept="image/*">
+    <div align="center">
+        <button type="submit" class="btn btn-primary"> Publish Comment</button>
+    </div>
+</form>
+<br />
 {% if commentsMediaPosts %}
 <h1>Comments</h1>
 <table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="commentsMediaPosts">
