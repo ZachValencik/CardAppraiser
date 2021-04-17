@@ -10,9 +10,10 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from pokemon import app, bcrypt, mysql
 from werkzeug.utils import secure_filename
-
+from flask_dropzone import Dropzone
+dropzone = Dropzone(app)
 UPLOAD2_FOLDER = './pokemon/static/uploads'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+#ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD2_FOLDER'] = UPLOAD2_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
@@ -133,24 +134,11 @@ def allowed_file(filename):
 
 @app.route("/upload", methods=["POST", "GET"])
 def upload():
-    cursor = mysql.connection.cursor()
-    cur = mysql.connection.cursor(mysql.cursors.DictCursor)
     if request.method == 'POST':
-        file = request.files['file']
-        filename = secure_filename(file.filename)
-        now = datetime.now()
-
-        if file and allowed_file(file.filename):
-            file.save(os.path.join(app.config['UPLOAD2_FOLDER'], filename))
-
-            cur.execute("INSERT INTO uploads (file_name, upload_time) VALUES (%s, %s)", [file.filename, now])
-            mysql.connection.commit()
-            cur.close()
-            print('File successfully uploaded ' + file.filename + ' to the database!')
-        else:
-            print('Invalid Uplaod only txt, pdf, png, jpg, jpeg, gif')
-        msg = 'Success Uplaod'
-    return jsonify(msg)
+        f= request.files.get('file')
+        f.save(os.path.join(app.config['UPLOAD2_FOLDER'], f.filename))
+    return render_template('myList.html')
+  
 
 
 # //
