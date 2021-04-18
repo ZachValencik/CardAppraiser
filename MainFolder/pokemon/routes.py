@@ -317,29 +317,7 @@ def editPost(id):
     else:
       return redirect(url_for('login'))
 
-@app.route('/viewPost/<id>',methods=['GET','POST'])
-def viewPost(id):
-    if "user" in session:
-      user = session["user"]
-      cur = mysql.connection.cursor()
-      if "admin" in session:
-        sql = "Select * FROM SocialMedia WHERE post_id = %s"
-        adr = (int(id),)
-      else:
-        sql = "Select * FROM SocialMedia WHERE post_id = %s"
-        adr = (int(id),)
-      cur.execute(sql,adr)
 
-      #cur.execute("""SELECT * FROM SocialMedia WHERE post_id = %s""", (int(id),))
-      dataMediaPosts = cur.fetchall()
-      if "admin" in session:
-        admin = session["admin"]
-        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts,admin=admin)
-      else:
-        return render_template('viewPost.html',userName=user,dataMediaPosts=dataMediaPosts)
-
-    else:
-      return redirect(url_for('login'))
 
 @app.route('/deletePost/<id>', methods=['GET', 'DELETE'])
 def deletePost(id):

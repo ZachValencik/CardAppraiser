@@ -63,7 +63,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for cPosts in commentsMediaPosts %}
+        {% for cPosts in commentsMediaPosts|reverse  %}
         <tr>
             {% if cPosts.image %}
             <td>{{cPosts.comment}}   
