@@ -179,6 +179,20 @@ def profile():
         return render_template('profile.html',userName=user,dataMediaPosts=dataMediaPosts)
 
 
+@app.route('/displayMyList',methods=['GET','POST','DELETE'])
+def displayMyList():
+    if "user" in session:
+      user = session["user"]
+      cur = mysql.connection.cursor()
+      cur.execute("""SELECT * FROM uploads WHERE user = %s""", (user,))
+      dataMediaPosts = cur.fetchall()
+      if "admin" in session:
+        admin = session["admin"]
+        return render_template('displayMyList.html',userName=user,dataMediaPosts=dataMediaPosts,admin=admin)
+      else:
+        return render_template('displayMyList.html',userName=user,dataMediaPosts=dataMediaPosts)
+
+
 @app.route('/editPost/<id>',methods=['GET','POST'])
 def editPost(id):
     if "user" in session:
@@ -294,6 +308,23 @@ def deletePost(id):
         cur.close()
         flash(f'Post has been deleted', 'sucess')
         return redirect(url_for('profile'))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/deletePost2/<id>', methods=['GET', 'DELETE'])
+def deletePost2(id):
+    if "user" in session:
+        print(id)
+        user = session["user"]
+        print(user)
+        cur = mysql.connection.cursor()
+        sql = "DELETE FROM uploads WHERE upload_id = %s and user = %s"
+        adr = (int(id), user,)
+        cur.execute(sql, adr)
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Post has been deleted', 'sucess')
+        return redirect(url_for('displayMyList'))
     else:
         return redirect(url_for('login'))
 

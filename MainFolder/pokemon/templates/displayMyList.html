@@ -1,0 +1,40 @@
+<!-- {% extends "layout.html" %} -->
+{% block content %}
+
+
+{% if userName %}
+<h1>Pokémon - Mylist of {{userName}}</h1>
+{% endif %}
+
+<table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
+    <caption>List of pervious posts</caption>
+    <thead class="thead-dark">
+        <tr>
+            <th>Post</th>
+            <th>User</th>
+
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mPosts in dataMediaPosts|reverse %}
+        <tr>
+            {% if mPosts.file_name %}
+            <td>{{mPosts.file_name}}   <img src="../static/uploads/{{mPosts.file_name}}" width="150" height="150"/></td>
+            <td>{{mPosts.user}}</td>
+
+            <td><a data-method="DELETE" href = {{ url_for('deletePost2' ,id=mPosts.upload_id) }}>Delete</a></td>
+            {% else %}
+            <td>{{mPosts.file_name}}</td>
+            <td>{{mPosts.user}}</td>
+
+            <td><a data-method="DELETE" href = {{ url_for('deletePost2' ,id=mPosts.upload_id) }}>Delete</a></td>
+            {% endif %}
+        </tr>
+        {% endfor%}
+    </tbody>
+</table>
+<br />
+
+
+{% endblock content %}
