@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../static/css/socialMedia.css">
 <!-- {% extends "layout.html" %} -->
 {% block content %}
 
@@ -12,7 +13,6 @@
         <tr>
             <th>Post</th>
             <th>User</th>
-
             <th>Delete</th>
         </tr>
     </thead>
@@ -20,8 +20,16 @@
         {% for mPosts in dataMediaPosts|reverse %}
         <tr>
             {% if mPosts.file_name %}
-            <td>{{mPosts.file_name}}   <img src="../static/uploads/{{mPosts.file_name}}" width="150" height="150"/></td>
-            <td>{{mPosts.user}}</td>
+            <td>{{mPosts.file_name}}
+
+   <a class="lightbox" href="#{{ mPosts.file_name }}">
+   <img src="../static/uploads/{{mPosts.file_name}}"class="photo" width="150" height="150"/>
+</a>
+<div class="lightbox-target" id="{{ mPosts.file_name }}">
+   <img src="../static/uploads/{{mPosts.file_name}}"/>
+   <a class="lightbox-close" href="#"></a>
+</div>
+    <td>{{mPosts.user}}</td>
 
             <td><a data-method="DELETE" href = {{ url_for('deletePost2' ,id=mPosts.upload_id) }}>Delete</a></td>
             {% else %}
