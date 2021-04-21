@@ -1,20 +1,4 @@
 <!-- {% extends "layout.html" %} -->
-<script type="text/javascript">
-
-var randomPic = [
-  "../static/css/snorlax.png",
-  "../static/css/bulbasaur.png",
-  "../static/css/poliwhirl.png"
-];
-
-function getImage() {
-  var img = '<img src=\"';
-  var random = Math.floor(Math.random() * randomPic.length);
-  img += randomPic[random];
-  img += '\" alt = \"Pokemon\" />'
-  return img;
-}
-</script>
 {% block content %}
 
 {% if userName %}
@@ -38,7 +22,7 @@ function getImage() {
 
     <div class="column middle">
       <p>Welcome to the card appraiser where you can sell, buy, and trade your pokemon cards!
-          You can also search for cards and create a collection to share with friends! Remember Gota Catch them all ! </p>
+          You can also search for cards and create a collection to share with friends! Remember Gotta Catch 'em all ! </p>
     </div>
   
     <div class="column right">
