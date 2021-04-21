@@ -1,4 +1,5 @@
 <!-- {% extends "layout.html" %} -->
+<link rel="stylesheet" href="../static/css/socialMedia.css">
 {% block content %}
 
 
@@ -6,7 +7,7 @@
 <h1>Pokémon - Profile of {{userName}}</h1>
 {% endif %}
 
-<table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
+<table align="center" class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
     <caption>List of pervious posts</caption>
     <thead class="thead-dark">
         <tr align="center">
@@ -21,7 +22,15 @@
         {% for mPosts in dataMediaPosts|reverse %}
         <tr>
             {% if mPosts.image %}
-            <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>
+            <td>{{mPosts.post}}
+<a class="lightbox" href="#{{ mPosts.image }}">
+   <img src="../static/profile_pics/{{mPosts.image}}"class="photo" width="150" height="150"/>
+</a>
+<div class="lightbox-target" id="{{ mPosts.image }}">
+   <img src="../static/profile_pics/{{mPosts.image}}"/>
+   <a class="lightbox-close" href="#"></a>
+</div>
+    </td>
             <td>{{mPosts.username}}</td>
             <td><a data-method="POST" href = {{ url_for('viewPost' ,id=mPosts.post_id) }}>View Post</a></td>
             <td><a data-method="GET" href = {{ url_for('editPost' ,id=mPosts.post_id) }}>Edit</a></td>

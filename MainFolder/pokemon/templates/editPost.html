@@ -6,7 +6,7 @@
 <h1>Pokémon - Edit Post For {{userName}}</h1>
 {% endif %}
 
-<table class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
+<table align="center" class="table align-middle table-bordered table-striped table-dark table-hover" text-align="center" id="dataMediaPosts">
     <thead class="thead-dark">
         <tr>
             <th>Post</th>
@@ -17,7 +17,15 @@
         {% for mPosts in dataMediaPosts|reverse %}
         <tr>
             {% if mPosts.image %}
-            <td>{{mPosts.post}}   <img src="../static/profile_pics/{{mPosts.image}}" width="150" height="150"/></td>
+            <td>{{mPosts.post}}
+                <a class="lightbox" href="#{{ mPosts.image }}">
+   <img src="../static/profile_pics/{{mPosts.image}}"class="photo" width="150" height="150"/>
+</a>
+<div class="lightbox-target" id="{{ mPosts.image }}">
+   <img src="../static/profile_pics/{{mPosts.image}}"/>
+   <a class="lightbox-close" href="#"></a>
+</div>
+    </td>
             <td>{{mPosts.username}}</td>
             <form method="POST"  enctype="multipart/form-data">
                 <label for="message">Edit Message</label><br>
@@ -25,7 +33,7 @@
                 <br>
                 <input type="file" id="img" name="img" accept="image/*">
                 <br>
-                <input type="submit">
+                <input  type="submit">
               </form>
             {% else %}
             <td>{{mPosts.post}}</td>
