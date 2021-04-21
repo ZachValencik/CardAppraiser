@@ -82,7 +82,7 @@ h1, h2, h3, h5, h6 {
   height: 200px;
   width: 200px;
   -webkit-filter: blur(5px);
-  filter: blur(20px);
+  filter: blur(15px);
   cursor: pointer;
 }
 
@@ -108,8 +108,11 @@ h1, h2, h3, h5, h6 {
   text-align: center;
 }
 .column.middle p {
-  color: #fff;
-  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+  color: white;
+  font-size: 2rem;
+  text-shadow: 3px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+  font-weight: bolder;
+
 }
 
 .row:after {
@@ -191,10 +194,6 @@ label[for=img] {
   border-radius: 5px;
   background-color: #f2f2f2;
   margin-top: 6%;
-}
-
-#mediaPost {
-  
 }
 
 #dataMediaPosts {
