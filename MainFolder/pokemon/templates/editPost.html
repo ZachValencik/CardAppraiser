@@ -1,7 +1,5 @@
-{% extends "layout.html" %}
+<!-- {% extends "layout.html" %} -->
 {% block content %}
-
-
 {% if userName %}
 <h1>Pokémon - Edit Post For {{userName}}</h1>
 {% endif %}
@@ -14,6 +12,7 @@
         </tr>
     </thead>
     <tbody>
+        
         {% for mPosts in dataMediaPosts|reverse %}
         <tr>
             {% if mPosts.image %}
@@ -25,32 +24,42 @@
    <img src="../static/profile_pics/{{mPosts.image}}"/>
    <a class="lightbox-close" href="#"></a>
 </div>
+
+    <form method="POST"  enctype="multipart/form-data" id="mediaForm">
+        <label for="message" style="font-size: 12px; color: white;">Edit Message</label><br>
+        <textarea name="message" id="message" class="form-control">{{mPosts.post}}</textarea>
+        <br>
+        <input type="file" id="img" name="img" accept="image/*">
+        <br>
+        <div align="center">
+            <button type="submit" class="publish">Submit</button>
+        </div>
+    </form>
     </td>
-            <td>{{mPosts.username}}</td>
-            <form method="POST"  enctype="multipart/form-data">
-                <label for="message">Edit Message</label><br>
+        <td>{{mPosts.username}}</td>
+        
+        {% else %}
+        <td>{{mPosts.post}}
+            <form method="POST"  enctype="multipart/form-data" id="mediaForm">
+                <label for="message" style="font-size: 12px; color: white;">Edit Message</label><br>
                 <textarea name="message" id="message" class="form-control">{{mPosts.post}}</textarea>
                 <br>
                 <input type="file" id="img" name="img" accept="image/*">
                 <br>
-                <input  type="submit">
-              </form>
-            {% else %}
-            <td>{{mPosts.post}}</td>
-            <td>{{mPosts.username}}</td>
-            <form method="POST"  enctype="multipart/form-data">
-                <label for="message">Edit Message</label><br>
-                <textarea name="message" id="message" class="form-control">{{mPosts.post}}</textarea>
-                <br>
-                <input type="file" id="img" name="img" accept="image/*">
-                <br>
-                <input type="submit">
-              </form>
-            {% endif %}
+                <div align="center">
+                    <button type="submit" class="publish">Submit</button>
+                </div>
+            </form>
+        </td>
+
+        <td>{{mPosts.username}}</td>
+     
+        {% endif %}
         </tr>
         {% endfor%}
     </tbody>
 </table>
+
 <br />
 
 
