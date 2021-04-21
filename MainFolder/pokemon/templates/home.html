@@ -1,4 +1,20 @@
 <!-- {% extends "layout.html" %} -->
+<script type="text/javascript">
+
+var randomPic = [
+  "../static/css/snorlax.png",
+  "../static/css/bulbasaur.png",
+  "../static/css/poliwhirl.png"
+];
+
+function getImage() {
+  var img = '<img src=\"';
+  var random = Math.floor(Math.random() * randomPic.length);
+  img += randomPic[random];
+  img += '\" alt = \"Pokemon\" />'
+  return img;
+}
+</script>
 {% block content %}
 
 {% if userName %}
