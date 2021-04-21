@@ -109,7 +109,9 @@ h1, h2, h3, h5, h6 {
 }
 .column.middle p {
   color: #fff;
-  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+  font-size: 2rem;
+  text-shadow: 4px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+  font-weight: bolder;
 }
 
 .row:after {
@@ -191,10 +193,6 @@ label[for=img] {
   border-radius: 5px;
   background-color: #f2f2f2;
   margin-top: 6%;
-}
-
-#mediaPost {
-  
 }
 
 #dataMediaPosts {
