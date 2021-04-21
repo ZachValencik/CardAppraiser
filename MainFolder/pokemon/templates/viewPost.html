@@ -35,6 +35,11 @@
             <td>{{mPosts.username}}</td>
             {% else %}
             <td>{{mPosts.post}}</td>
+                 <img src="../static/profile_pics/{{mPosts.image}}"class="photo" width="150" height="150"/>
+             </a>
+             <div class="lightbox-target" id="{{ mPosts.image }}">
+                <img src="../static/profile_pics/{{mPosts.image}}"/>
+                <a class="lightbox-close" href="#"></a>
             <td>{{mPosts.username}}</td>
             {% endif %}
         </tr>
