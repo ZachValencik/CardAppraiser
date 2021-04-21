@@ -69,7 +69,7 @@ def register():
                 cur.close()
                 flash(f'Your account has been created!',
                       'success')  # A flash method that alerts the user that the form was completed
-                return render_template('register.html', title='register'), 200
+                return redirect(url_for('login'))
             except:
                 flash(f'ERROR!', 'danger')  # A flash method that alerts the user that the form was completed
                 return render_template('register.html', title='register'), 400
@@ -108,7 +108,7 @@ def login():
       flash(f'Wrong username or password!','danger')
       return render_template('login.html',title='login'),400
   else:
-    return render_template('login.html',title='login'),400
+    return render_template('login.html',title='login'),200
 
 
 @app.route('/logout')
