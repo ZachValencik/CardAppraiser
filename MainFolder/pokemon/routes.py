@@ -345,20 +345,31 @@ def editPost(id):
 
 @app.route('/deletePost/<id>', methods=['GET', 'DELETE'])
 def deletePost(id):
-    if "user" in session:
-        print(id)
-        user = session["user"]
-        print(user)
-        cur = mysql.connection.cursor()
-        sql = "DELETE FROM SocialMedia WHERE post_id = %s and username = %s"
-        adr = (int(id), user,)
-        cur.execute(sql, adr)
-        mysql.connection.commit()
-        cur.close()
-        flash(f'Post has been deleted', 'sucess')
-        return redirect(url_for('profile'))
+
+  if "user" in session:
+    
+    print(id)
+    user = session["user"]
+    print(user)
+    cur = mysql.connection.cursor()
+    if "admin" in session:
+      sql = "DELETE FROM SocialMedia WHERE post_id = %s"
+      adr = (int(id),)
+      cur.execute(sql,adr)
+      mysql.connection.commit()
+      cur.close()
+      flash(f'Post has been deleted','sucess')
+      return redirect(url_for('admin'))
     else:
-        return redirect(url_for('login'))
+      sql = "DELETE FROM SocialMedia WHERE post_id = %s and username = %s"
+      adr = (int(id),user,)
+      cur.execute(sql,adr)
+      mysql.connection.commit()
+      cur.close()
+      flash(f'Post has been deleted','sucess')
+      return redirect(url_for('profile'))
+  else:
+    return redirect(url_for('login'))
 
 @app.route('/deletePost2/<id>', methods=['GET', 'DELETE'])
 def deletePost2(id):
