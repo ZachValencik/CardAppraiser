@@ -5,8 +5,8 @@
 
 a.lightbox img {
 height: 150px;
-
-
+width: 150px;
+margin: 94px 20px 20px 20px;
 
 }
 
@@ -15,7 +15,7 @@ height: 150px;
 .lightbox-target {
 position:fixed;
 top: -100%;
-
+width: 48.5%;
 background: rgba(0,0,0,.7);
 opacity: 0;
 -webkit-transition: opacity .5s ease-in-out;
